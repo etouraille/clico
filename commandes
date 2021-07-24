@@ -1,0 +1,18 @@
+// to enable database
+// executed in database container:
+// not necessary.
+chown -R mysql:mysql /var/lib/mysql/ #your mysql user may have different name
+chmod -R 755 /var/lib/mysql/
+
+// in order to generate .pem
+mkdir -p api/config/jwt
+openssl genrsa -out api/config/jwt/private.pem -aes256 4096
+openssl rsa -pubout -in api/config/jwt/private.pem -out api/config/jwt/public.pem
+
+
+// to enabe log with docker
+#/etc/php/7.0/fpm/php-fpm.conf
+error_log = /proc/self/fd/2
+
+#/etc/php/7.0/fpm/pool.d/www.conf
+catch_workers_output = yes

@@ -1,0 +1,2 @@
+plugin_load_add=mysql_json=type_mysql_json
+plugin_maturity=alpha

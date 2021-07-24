@@ -1,0 +1,21 @@
+<div>
+  <form>
+    <div>
+      <label>Email</label>
+      <input [(ngModel)]="email" (blur)="checkEmail()" name="email"/>
+    </div>
+    <div *ngIf="isSubscribe" >
+      <label>Name</label>
+      <input [(ngModel)]="name" name="name" (blur)="displayPassword()"/>
+    </div>
+    <div *ngIf="isPassword">
+      <label>Mot de passe</label>
+      <input [(ngModel)]="password" name="password"/>
+    </div>
+    <button (click)="submit()">
+      <span *ngIf="isSubscribe">Enregistrer</span>
+      <span *ngIf="!isSubscribe">Connexion</span>
+    </button>
+    <button (click)="ping()">Ping</button>
+  </form>
+</div>
