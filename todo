@@ -12,3 +12,6 @@ create shop
 - commandes
 - utilisateurs
 - payment
+
+create product:
+
