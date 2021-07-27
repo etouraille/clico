@@ -1,0 +1,54 @@
+<div>
+  <form [formGroup]="createShopForm" (ngSubmit)="onSubmit()">
+    <div class="form-group col-auto">
+      <label class="form-label">Nom de la boutique</label>
+      <div class="input-group">
+        <input class="form-control" formControlName="name" name="name"/>
+      </div>
+    </div>
+    <div class="form-group col-auto">
+      <label class="form-label">Types de produits vendus</label>
+      <select class="custom-select" required formControlName="type">
+        <option *ngFor="let product of products" value="{{product}}">{{ product }}</option>
+      </select>
+    </div>
+    <div class="form-group col-auto">
+      <label class="form-label">Adresse de retrait</label>
+      <div class="input-group">
+        <app-place class="place" formControlName="address"></app-place>
+      </div>
+    </div>
+    <div class="form-group col-auto">
+      <label class="form-label">Image</label>
+      <div class="custom-file">
+        <file-upload (onUploadComplete)="uploadComplete($event)"></file-upload>
+      </div>
+    </div>
+    <div>
+      <h1>Contactez nous</h1>
+    </div>
+    <div class="form-row col-auto">
+      <div class="col-md-4 mb-3">
+        <label>Email</label>
+        <input type="text" class="form-control" formControlName="email">
+      </div>
+      <div class="col-md-4 mb-3">
+        <label>Téléphone</label>
+        <input type="text" class="form-control" formControlName="phone">
+      </div>
+      <div class="col-md-4 mb-3">
+        <label>Mobile</label>
+        <input type="text" class="form-control" formControlName="mobile">
+      </div>
+    </div>
+    <div class="form-group col-auto">
+      <div class="input-group">
+        <button class="btn" [disabled]="disabled()">
+          <span *ngIf="createShopForm.value.uuid">Modifier</span>
+          <span *ngIf="!createShopForm.value.uuid">Suivant</span>
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

@@ -48,7 +48,14 @@ services:
     build: docker/node
     volumes:
       - ./front/:/src
-    command: "ng serve --host 0.0.0.0 --port 4200"
     tty: true
     ports:
       - "4200:4200"
+  cdn:
+    build: docker/node
+    volumes:
+      - ./cdn/:/src
+    tty: true
+    ports:
+      - "8081:80"
+

@@ -16,7 +16,21 @@ textarea:focus, input:focus {
   outline: none;
 }
 
-input {
-  font-size:22px;
-  size: 24px;
+.icon {
+  height : 21px;
 }
+
+.green {
+  background-color: lightgreen;
+  position: absolute;
+  top:0;
+  width: 100%;
+  bottom: 0;
+}
+
+.place {
+  width: 100%;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

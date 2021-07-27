@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "@shared";
+import {FormBuilder, Validators} from "@angular/forms";
+import { faAt, faEye } from '@fortawesome/free-solid-svg-icons';
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -16,49 +19,81 @@ export class LoginComponent implements OnInit {
   isSubscribe: boolean = false;
   isPassword: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  passwordType: string = 'password';
+
+
+  loginForm = this.fb.group({
+    email: ['', Validators.email],
+    name: [''],
+    password: ['']
+  })
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+
   }
 
+
   checkEmail(): void {
-    console.log(this.email);
-    this.http.get('/emailExists/' + this.email).subscribe((data: any) => {
+    this.http.get('/emailExists/' + this.loginForm.get('email').value).subscribe((data: any) => {
       if (!!!data.exists) {
         this.isSubscribe = true;
+        this.isPassword = false;
+        setTimeout(() => {
+          document.getElementById("name").focus()
+        })
+
       } else {
         this.isPassword = true;
+        this.isSubscribe = false;
+        setTimeout(() => {
+          document.getElementById("password").focus()
+        })
+
       }
     })
   }
 
   displayPassword(): void {
-    console.log('is password');
     this.isPassword = true;
+    setTimeout(() => {
+      document.getElementById("password").focus()
+    })
+  }
+
+  toggleDisplayPassword(): void {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
   }
 
   submit(): void {
     if (this.isSubscribe) {
       this.http.post('/subscribe', {
-        email: this.email,
-        password : this.password,
-        name : this.name
+        email: this.loginForm.value.email,
+        password : this.loginForm.value.password,
+        name : this.loginForm.value.name,
       }).subscribe((jwt: any) => {
         this.authService.authenticate(jwt);
+        this.router.navigate(['je-vends']);
       })
     } else {
       this.http.post('/login', {
-        username: this.email,
-        password : this.password,
+        username: this.loginForm.value.email,
+        password : this.loginForm.value.password,
       }).subscribe((jwt: any) => {
         this.authService.authenticate(jwt);
+        this.router.navigate(['je-vends']);
       })
     }
   }
 
-  ping(): void {
-    this.http.get('/api/ping').subscribe(data => {
-      console.log(data);
-    })
+  isDisabled(): boolean {
+    return !this.loginForm.valid ||
+      !this.isPassword;
   }
 }

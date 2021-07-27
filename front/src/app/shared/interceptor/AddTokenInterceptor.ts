@@ -26,7 +26,7 @@ export class AddTokenInterceptor implements HttpInterceptor {
     const userToken = this.authService.getUserToken();
     const modifiedReq = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${userToken}`),
-      url: environment.api + req.url,
+      url: req.url.match(/https?/) ? req.url : environment.api + req.url,
     });
     return next
       .handle(modifiedReq)

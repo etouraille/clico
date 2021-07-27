@@ -1,1 +1,14 @@
 cron et script pour la suppression des token expirés.
+redirection sur la bonne page après la page de login.
+
+create shop
+- nom
+- contact ( tel, mobile, email)
+- adresse
+- image
+- logo
+- planning
+- type de produit vendu
+- commandes
+- utilisateurs
+- payment

@@ -1,21 +1,30 @@
-<div>
-  <form>
-    <div>
-      <label>Email</label>
-      <input [(ngModel)]="email" (blur)="checkEmail()" name="email"/>
+<div class="green">
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <div class="form-group col-auto">
+      <label class="form-label">Email</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+        </div>
+        <input class="form-control" formControlName="email" (blur)="checkEmail()" name="email"/>
+      </div>
     </div>
-    <div *ngIf="isSubscribe" >
-      <label>Name</label>
-      <input [(ngModel)]="name" name="name" (blur)="displayPassword()"/>
+    <div class="form-group col-auto" *ngIf="isSubscribe" >
+      <label class="form-label">Name</label>
+      <input id="name" class="form-control" formControlName="name" name="name" (blur)="displayPassword()"/>
     </div>
-    <div *ngIf="isPassword">
-      <label>Mot de passe</label>
-      <input [(ngModel)]="password" name="password"/>
+    <div class="form-group col-auto" *ngIf="isPassword">
+      <label class="form-label">Mot de passe</label>
+      <div class="input-group">
+        <input id="password" class="form-control" formControlName="password" name="password" type="{{passwordType}}"/>
+        <div class="input-group-append">
+          <div class="input-group-text"><img (click)="toggleDisplayPassword()" class="icon" src="/assets/eye-close.png" alt="secret"/></div>
+        </div>
+      </div>
     </div>
-    <button (click)="submit()">
+    <button type="submit" class="btn" [disabled]="isDisabled()">
       <span *ngIf="isSubscribe">Enregistrer</span>
       <span *ngIf="!isSubscribe">Connexion</span>
     </button>
-    <button (click)="ping()">Ping</button>
   </form>
 </div>
