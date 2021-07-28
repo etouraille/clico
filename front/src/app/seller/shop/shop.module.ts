@@ -8,20 +8,20 @@ import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import { HomeComponent } from './home/home.component';
+import {SharedModule} from "@shared";
+import { ProductsComponent } from './products/products.component';
+import { CreateProductComponent } from './create-product/create-product.component';
+import { ProductComponent } from './product/product.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,
-    ReactiveFormsModule,
-    GooglePlaceModule,
-    MatProgressBarModule,
-    MatIconModule,
-    MatButtonModule,
-    FormsModule,
+    SharedModule,
   ]
 })
 export class ShopModule { }

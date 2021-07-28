@@ -16,3 +16,7 @@ error_log = /proc/self/fd/2
 
 #/etc/php/7.0/fpm/pool.d/www.conf
 catch_workers_output = yes
+
+
+- ./docker/php/conf/php-fpm.conf:/usr/local/etc/php-fpm.conf
+- ./docker/php/conf/www.conf:/usr/local/etc/php-fpm.d/www.conf

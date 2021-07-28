@@ -1,3 +1,9 @@
 <div>
-  <div><button class="btn" (click)="createShop()">Je créée ma boutique</button></div>
+  <div *ngIf="!currentShop">
+    <button class="btn" (click)="createShop()">Je créée ma boutique</button>
+  </div>
+  {{ currentShop.uuid }}
+  <div *ngIf="currentShop.uuid">
+    <button class="btn" (click)="goShop()">Ma boutique {{currentShop.name}}</button>
+  </div>
 </div>

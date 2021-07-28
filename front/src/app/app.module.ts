@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { AddTokenInterceptor, PlaceComponent } from "@shared";
+import {AddTokenInterceptor, PlaceComponent, productReducer, shopReducer} from "@shared";
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {StoreModule} from "@ngrx/store";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,15 @@ import {MatButtonModule} from "@angular/material/button";
     FormsModule,
     NgbModule,
     BrowserAnimationsModule,
+    StoreModule.forRoot({
+        shop: shopReducer,
+        product: productReducer
+      }, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+      },
+    })
 
   ],
   providers: [

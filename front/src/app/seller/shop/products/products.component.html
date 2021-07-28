@@ -1,0 +1,7 @@
+<div>
+  <button class="btn" (click)="createProduct()">Je créée un produit</button>
+  <span *ngFor="let product of products">
+    {{ product.name }}<button (click)="onDeleteProduct(product.uuid)" class="btn"><mat-icon >delete</mat-icon></button>
+    <img (click)="navigate(product.uuid)" src="{{ 'http://localhost:8081/file/' + product.pictures[0]?.file}}" />
+  </span>
+</div>

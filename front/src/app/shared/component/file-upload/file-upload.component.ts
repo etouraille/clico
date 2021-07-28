@@ -5,7 +5,7 @@ import { EventEmitter } from "@angular/core";
 import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'file-upload',
+  selector: 'app-file-upload',
   templateUrl: "file-upload.component.html",
   styleUrls: ["file-upload.component.scss"]
 })
@@ -38,11 +38,11 @@ export class FileUploadComponent {
           finalize(() => this.reset())
         );
 
-      this.uploadSub = upload$.subscribe(event => {
+      this.uploadSub = upload$.subscribe((event: any) => {
         if (event.type == HttpEventType.UploadProgress) {
           this.uploadProgress = Math.round(100 * (event.loaded / event.total));
         } else if (event.type === HttpEventType.Response) {
-          this.onUploadComplete.emit(event);
+          this.onUploadComplete.emit(event.body.file);
         }
       })
     }

@@ -5,12 +5,14 @@ import { SellerRoutingModule } from "./seller-routing.module";
 import { CreateShopComponent } from './create-shop/create-shop.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ShopComponent } from './shop/shop.component';
-import {PlaceComponent} from "@shared";
+import {PlaceComponent, SharedModule, shopReducer} from "@shared";
 import {FileUploadComponent} from "../shared/component/file-upload/file-upload.component";
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {HomeComponent} from "./home/home.component";
+import { StoreModule } from '@ngrx/store';
 
 
 
@@ -18,19 +20,13 @@ import {MatButtonModule} from "@angular/material/button";
   declarations: [
     SellerComponent,
     ShopComponent,
-    CreateShopComponent,
-    PlaceComponent,
-    FileUploadComponent
+    HomeComponent,
   ],
   imports: [
     CommonModule,
     SellerRoutingModule,
-    ReactiveFormsModule,
-    GooglePlaceModule,
-    MatProgressBarModule,
-    MatIconModule,
-    MatButtonModule,
-    FormsModule,
+    SharedModule,
+
   ]
 })
 export class SellerModule { }

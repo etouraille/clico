@@ -1,5 +1,5 @@
-export interface Address {
-  address?:string;
+export interface Address{
+  address: string;
   lat: number;
-  lng?: number;
+  lng: number;
 }

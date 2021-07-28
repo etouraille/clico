@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {Shop} from "@shared";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
+import {setShop, Shop} from "@shared";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-create-shop',
@@ -12,7 +13,7 @@ import {Shop} from "@shared";
 export class CreateShopComponent implements OnInit {
 
   src : string;
-  products = [
+  product = [
     'Produits agricoles',
     'Materiel Informatique',
     'Livres',
@@ -24,10 +25,10 @@ export class CreateShopComponent implements OnInit {
     uuid: [''],
     name: ['', Validators.required],
     type: ['', Validators.required],
-    address: this.fb.group({
-      address: ['', Validators.required],
-      lat: ['', Validators.required],
-      lng: ['', Validators.required],
+    address: new FormControl({
+      address: new FormControl('', Validators.required),
+      lat: new FormControl('', Validators.required),
+      lng: new FormControl('', Validators.required),
     }),
     email: ['', Validators.email],
     phone: [''],
@@ -37,14 +38,19 @@ export class CreateShopComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private store: Store<{ shop: Shop }>
   ) {}
 
   ngOnInit(): void {
-    if (this.shop) {
-      console.log(this.shop);
-      this.createShopForm.patchValue(this.shop);
-    }
+    this.store.select('shop').subscribe((data: any ) => {
+      let shop = data.shop;
+      if (shop) {
+        console.log(shop);
+        this.createShopForm.patchValue(shop);
+      }
+    })
+
   }
 
   uploadComplete(event: any): void {
@@ -53,12 +59,12 @@ export class CreateShopComponent implements OnInit {
 
   onSubmit(): void {
     if (this.createShopForm.value.uuid) {
-      this.http.patch('/api/shop', this.createShopForm.value).subscribe((data) => {
-
+      this.http.patch('/api/shop', this.createShopForm.value).subscribe((data:Shop) => {
+        this.store.dispatch(setShop({shop: data}));
       });
     } else {
       this.http.post('/api/create-shop', this.createShopForm.value).subscribe((data: any) => {
-        console.log(data);
+        this.store.dispatch(setShop({shop: data}));
         this.router.navigate(['/je-vends/ma-boutique/' + data.uuid]);
       })
     }

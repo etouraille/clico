@@ -8,20 +8,20 @@
     </div>
     <div class="form-group col-auto">
       <label class="form-label">Types de produits vendus</label>
-      <select class="custom-select" required formControlName="type">
-        <option *ngFor="let product of products" value="{{product}}">{{ product }}</option>
+      <select class="custom-select" required formControlName="type" name="type">
+        <option *ngFor="let product of product" value="{{product}}">{{ product }}</option>
       </select>
     </div>
     <div class="form-group col-auto">
       <label class="form-label">Adresse de retrait</label>
       <div class="input-group">
-        <app-place class="place" formControlName="address"></app-place>
+        <app-place class="place" formControlName="address" name="address"></app-place>
       </div>
     </div>
     <div class="form-group col-auto">
       <label class="form-label">Image</label>
       <div class="custom-file">
-        <file-upload (onUploadComplete)="uploadComplete($event)"></file-upload>
+        <app-file-upload (onUploadComplete)="uploadComplete($event)"></app-file-upload>
       </div>
     </div>
     <div>
@@ -30,7 +30,7 @@
     <div class="form-row col-auto">
       <div class="col-md-4 mb-3">
         <label>Email</label>
-        <input type="text" class="form-control" formControlName="email">
+        <input type="text" class="form-control" formControlName="email" name="email">
       </div>
       <div class="col-md-4 mb-3">
         <label>Téléphone</label>

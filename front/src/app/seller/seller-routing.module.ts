@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SellerComponent } from "./seller.component";
 import {HomeComponent} from "./home/home.component";
-import {ShopResolverService} from "@shared";
+import {ProductsResolverService, ShopResolverService} from "@shared";
+import {ProductResolverService} from "../shared/resolver/product-resolver.service";
 
 
 const sellerRoutes: Routes = [
@@ -23,6 +24,7 @@ const sellerRoutes: Routes = [
         loadChildren:() => import('./shop/shop.module').then(m => m.ShopModule ),
         resolve: {
           shop: ShopResolverService,
+          product: ProductsResolverService
         }
       }
     ]
