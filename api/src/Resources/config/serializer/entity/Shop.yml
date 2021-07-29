@@ -1,0 +1,35 @@
+App\Entity\Shop:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    uuid:
+      type: string
+      groups: [output]
+    name:
+      type: string
+      groups: [output]
+    type:
+      type: string
+      groups: [ output ]
+    address:
+      type: string
+      groups: [ output ]
+    lat:
+      type: float
+      groups: [ output ]
+    lng:
+        type: float
+        groups: [ output ]
+    file:
+      type: string
+      groups: [output]
+    email:
+      type: string
+      groups: [output]
+    phone:
+      type: string
+      groups: [output]
+    mobile:
+      type: string
+      groups: [output]

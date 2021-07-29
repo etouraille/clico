@@ -1,0 +1,11 @@
+App\Model\Jwt:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    token:
+      type: string
+      groups: [output]
+    expire:
+      type: integer
+      groups: [output]

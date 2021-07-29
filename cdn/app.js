@@ -46,6 +46,21 @@ function readFile( req, res ) {
     const file = __dirname + '/upload/' + req.params.filename;
     return res.download(file);
 }
+
+function deletePicture( req, res ) {
+    const filename = __dirname + '/upload/' + req.params.filename;
+    const radical = req.params.filename.substr(0, req.params.filename.lastIndexOf('.'));
+    const profile = __dirname + '/upload/' + radical + '-profile.png';
+
+    try {
+        fs.unlinkSync(filename);
+        fs.unlinkSync(profile);
+    } catch(error) {
+        return res.status(500).json({error});
+    }
+    return res.status(200).json({ok: true});
+}
+
 var app = express();
 app.use(cors())
 app.use(fileUpload());
@@ -53,6 +68,8 @@ app.use(fileUpload());
 app.route('/upload').post(onFileupload);
 
 app.route('/file/:filename').get(readFile)
+
+app.route('/picture/:filename').delete(deletePicture);
 
 
 app.set('port', process.env.PORT || 80);

@@ -1,0 +1,14 @@
+App\Model\Address:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    address:
+      type: string
+      groups: [input, output]
+    lat:
+      type: float
+      groups: [input, output]
+    lng:
+      type: float
+      groups: [input, output]

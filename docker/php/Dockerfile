@@ -15,7 +15,8 @@ RUN apt-get update \
         libssl-dev \
         libzip-dev \
         libonig-dev \
-    && docker-php-ext-install pdo pdo_mysql zip gmp mbstring \
+        libcurl4-openssl-dev \
+    && docker-php-ext-install pdo pdo_mysql zip gmp mbstring curl \
     && mkdir -p /usr/src/php/ext/xdebug \
     && curl -fsSL https://xdebug.org/files/xdebug-${XDEBUG_VERSION}.tgz | tar xz -C /usr/src/php/ext/xdebug --strip 1 \
     && docker-php-ext-install xdebug \

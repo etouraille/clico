@@ -1,0 +1,11 @@
+App\Model\Login:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    username:
+      type: string
+      groups: [input, output]
+    password:
+      type: string
+      groups: [input,output]

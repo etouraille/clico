@@ -1,0 +1,14 @@
+App\Model\Subscribe:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    email:
+      type: string
+      groups: [input]
+    password:
+      type: string
+      groups: [input]
+    name:
+      type: string
+      groups: [input]

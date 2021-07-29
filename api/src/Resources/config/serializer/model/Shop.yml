@@ -1,0 +1,29 @@
+App\Model\Shop:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    uuid:
+      type: string
+      groups: [input, output]
+    name:
+      type: string
+      groups: [input, output]
+    type:
+      type: string
+      groups: [ input, output ]
+    address:
+      type: App\Model\Address
+      groups: [ input, output ]
+    file:
+      type: string
+      groups: [input, output]
+    email:
+      type: string
+      groups: [input, output]
+    phone:
+      type: string
+      groups: [input, output]
+    mobile:
+      type: string
+      groups: [input, output]

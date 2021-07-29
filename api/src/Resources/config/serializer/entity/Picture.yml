@@ -1,0 +1,8 @@
+App\Entity\Picture:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    file:
+      type: string
+      groups: [input, output]

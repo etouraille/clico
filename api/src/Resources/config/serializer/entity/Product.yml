@@ -1,0 +1,23 @@
+App\Entity\Product:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    shopUuid:
+      type: string
+      groups: [input, output]
+    uuid:
+      type: string
+      groups: [input, output]
+    name:
+      type: string
+      groups: [input, output]
+    price:
+      type: float
+      groups: [input, output]
+    label:
+      type: string
+      groups: [input, output]
+    pictures:
+      type: ArrayCollection<App\Entity\Picture>
+      groups: [input, output]

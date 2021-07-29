@@ -1,0 +1,54 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # add more service definitions when explicit configuration is needed
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: [ 'controller.service_arguments' ]
+
+    App\Security\Authentication\Provider\JwtProvider:
+        arguments:
+            $cachePool: '@cache.app'
+
+    App\Security\Firewall\JwtListener:
+        arguments: [ '@security.token_storage', '@security.authentication.manager' ]
+
+    App\EventListener\AddUuidListener:
+        tags:
+             -
+                name: 'doctrine.event_listener'
+                event: 'postPersist'
+                priority: 500
+
+    App\EventListener\PostRemovePictureListener:
+        autowire: true
+        tags:
+            -
+              name: 'doctrine.event_listener'
+              event: 'postRemove'
+              priority: 501
+
+    jms_serializer.serialized_name_annotation_strategy:
+        class: JMS\Serializer\Naming\SerializedNameAnnotationStrategy
+        arguments:
+            - '@jms_serializer.identical_property_naming_strategy'
