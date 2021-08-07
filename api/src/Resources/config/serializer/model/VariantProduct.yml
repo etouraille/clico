@@ -1,0 +1,23 @@
+App\Model\VariantProduct:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    id:
+      type: integer
+      groups: [input, output,pv]
+    labels:
+      type: array<App\Model\Label>
+      groups: [input, output,pv]
+    picture:
+      type: array<App\Entity\Picture>
+      groups: [ input, output,pv]
+    price:
+      type: float
+      groups: [input,output,pv]
+    label:
+      type: string
+      groups: [input, output,pv]
+    product:
+      type: App\ENtity\Product
+      groups: [input, output,pv]

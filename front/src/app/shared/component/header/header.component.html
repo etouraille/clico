@@ -1,0 +1,17 @@
+<nav id="header" class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <button (click)="toggle()" class="btn-normal button" id="dropdownManual" (focus)="myDrop.open()">
+      <div class="button">
+        <mat-icon>{{ expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+        <img [src]="gravatar" />
+      </div>
+    </button>
+    <div class="d-inline-block dropdown" ngbDropdown #myDrop="ngbDropdown">
+      <div ngbDropdownMenu aria-labelledby="dropdownManual">
+        <div ngbDropdownItem><mat-icon class="icon-align">alternate_email</mat-icon>&nbsp;{{email}}</div>
+        <button ngbDropdownItem (click)="setting()"><mat-icon class="icon-align">settings</mat-icon>&nbsp;Réglages</button>
+        <button ngbDropdownItem (click)="unlog()"><mat-icon class="icon-align">exit_to_app</mat-icon>&nbsp;Déconnection</button>
+      </div>
+    </div>
+  </div>
+</nav>

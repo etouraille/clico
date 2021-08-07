@@ -8,7 +8,7 @@
     </div>
     <div class="form-group col-auto">
       <label class="form-label">Types de produits vendus</label>
-      <select class="custom-select" required formControlName="type" name="type">
+      <select class="custom-select form-control" required formControlName="type" name="type">
         <option *ngFor="let product of product" value="{{product}}">{{ product }}</option>
       </select>
     </div>

@@ -1,3 +1,23 @@
-<div class="green">
-  <router-outlet></router-outlet>
+<app-header></app-header>
+<div class="wrapper d-flex align-items-stretch">
+
+  <nav id="sidebar" [ngClass]="active ? 'active' : ''">
+    <div class="">
+      <ul class="nav">
+        <li class="active nav-item">
+          <a class="nav-link" (click)="navigate('home')">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigate('product')">Produits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigate('variant')">Variants</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="content" class="p-4 p-md-5">
+    <router-outlet></router-outlet>
+  </div>
 </div>

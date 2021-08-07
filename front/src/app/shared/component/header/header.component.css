@@ -1,0 +1,26 @@
+button.button {
+  width: 50px;
+  height: 50px;
+  outline: none;
+}
+div.button > mat-icon {
+  position: relative;
+  left: -11.5px;
+  top: -4px;
+  z-index: 100;
+}
+div.button > img {
+  position: relative;
+  width: 38px;
+  top: -25.5px;
+  left: -2px;
+}
+.dropdown {
+  position: relative;
+  top: 3em;
+  left: -20em;
+}
+.icon-align {
+  position: relative;
+  top: 6.5px;
+}

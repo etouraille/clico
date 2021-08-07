@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SellerComponent } from "./seller.component";
 import {HomeComponent} from "./home/home.component";
-import {ProductsResolverService, ShopResolverService} from "@shared";
+import {CurrentShopResolverService, ProductsResolverService, ShopResolverService} from "@shared";
 import {ProductResolverService} from "../shared/resolver/product-resolver.service";
 
 
@@ -10,6 +10,9 @@ const sellerRoutes: Routes = [
   {
     path: '',
     component: SellerComponent,
+    resolve: {
+      shop: CurrentShopResolverService,
+    },
     children: [
       {
         path: '',
@@ -23,8 +26,8 @@ const sellerRoutes: Routes = [
         path: 'ma-boutique/:uuid',
         loadChildren:() => import('./shop/shop.module').then(m => m.ShopModule ),
         resolve: {
-          shop: ShopResolverService,
-          product: ProductsResolverService
+          product: ProductsResolverService,
+          shop: ShopResolverService
         }
       }
     ]

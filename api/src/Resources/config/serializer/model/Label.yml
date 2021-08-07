@@ -1,0 +1,14 @@
+App\Model\Label:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    id:
+      type: integer
+      groups: [input, output,pv]
+    label:
+      type: string
+      groups: [input, output, pv]
+    name:
+      type: string
+      groups: [pv]

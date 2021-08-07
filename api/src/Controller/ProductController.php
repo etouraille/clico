@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductController
 {
@@ -70,11 +71,22 @@ class ProductController
     /**
      * @Get("/api/shop/{shopUuid}/product")
      * @View( serializerGroups={"output"})
-     * @return Product[]
+     * @return page, data => Product[]
      */
-    public function getproduct($shopUuid, EntityManagerInterface $em, LoggerInterface $logger, TokenStorageInterface $tokenStorage)
+    public function getProducts($shopUuid, EntityManagerInterface $em, LoggerInterface $logger, TokenStorageInterface $tokenStorage, Request $request)
     {
-        return $em->getRepository(Product::class)->getproductByShopUuid($shopUuid);
+        return $em
+            ->getRepository(Product::class)
+            ->getProducstByShopUuid($shopUuid);
+        /*
+            ->getProductByShopUuidAndFilterPaginate(
+                $shopUuid,
+                $request->query->get('filter',''),
+                $request->query->get('orderBy', 'ASC'),
+                $request->query->get('pageNumber', 0),
+                $request->query->get('pageSize', 10 )
+            );
+        */
     }
 
     /**

@@ -70,9 +70,15 @@ class Shop implements Indentifiable
      */
     private $product;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VariantLabel::class, mappedBy="shop")
+     */
+    private $variantLabels;
+
     public function __construct()
     {
         $this->product = new ArrayCollection();
+        $this->variantLabels = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,6 +230,36 @@ class Shop implements Indentifiable
             // set the owning side to null (unless already changed)
             if ($product->getShop() === $this) {
                 $product->setShop(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VariantLabel[]
+     */
+    public function getVariantLabels(): Collection
+    {
+        return $this->variantLabels;
+    }
+
+    public function addVariantLabel(VariantLabel $variantLabel): self
+    {
+        if (!$this->variantLabels->contains($variantLabel)) {
+            $this->variantLabels[] = $variantLabel;
+            $variantLabel->setShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariantLabel(VariantLabel $variantLabel): self
+    {
+        if ($this->variantLabels->removeElement($variantLabel)) {
+            // set the owning side to null (unless already changed)
+            if ($variantLabel->getShop() === $this) {
+                $variantLabel->setShop(null);
             }
         }
 

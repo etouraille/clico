@@ -5,4 +5,4 @@ App\Entity\Picture:
   properties:
     file:
       type: string
-      groups: [input, output]
+      groups: [input, output,pv]

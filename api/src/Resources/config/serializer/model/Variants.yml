@@ -1,0 +1,8 @@
+App\Model\Variants:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    variants:
+      type: array<App\Model\Variant>
+      groups: [input, output]

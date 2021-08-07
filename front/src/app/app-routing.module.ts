@@ -3,6 +3,7 @@ import { PreloadAllModules, Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {AuthGuard} from "@shared";
+import {SettingComponent} from "./setting/setting.component";
 
 
 const appRoutes: Routes = [
@@ -24,6 +25,12 @@ const appRoutes: Routes = [
         path: 'connexion',
         loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
       },
+      {
+        path: 'reglages',
+        component: SettingComponent,
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      }
     ]
   },
   { path: '**', component: PageNotFoundComponent }

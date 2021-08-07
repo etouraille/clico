@@ -1,0 +1,8 @@
+App\Model\Query:
+  exclusion_policy: all
+  xml_root_name: page
+  access_order: alphabetical
+  properties:
+    query:
+      type: string
+      groups: [input, output]

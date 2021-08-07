@@ -37,6 +37,15 @@ class TokenRepository extends ServiceEntityRepository
         return count($res)>0 ? $res[0] : null;
     }
 
+    public function getTokensForUser(User $user) {
+        return $this->createQueryBuilder('t')
+            ->join('t.user', 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $user->getEmail())
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Token[] Returns an array of Token objects
     //  */

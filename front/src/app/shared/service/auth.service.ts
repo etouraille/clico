@@ -41,4 +41,8 @@ export class AuthService {
       throw new Error('Wrong format');
     }
   }
+
+  unlog(): void {
+    window.localStorage.removeItem('jwt');
+  }
 }

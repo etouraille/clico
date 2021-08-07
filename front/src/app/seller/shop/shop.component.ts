@@ -15,29 +15,5 @@ export class ShopComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.getShop();
   }
-
-  private getShop(): void {
-    this.route.data.subscribe((data: {shop: Shop})=> {
-      this.shop = data.shop;
-    })
-  }
-
-  toggle() :void {
-    this.active = !this.active;
-  }
-
-  navigate(link: string): void {
-    switch( link ) {
-      case 'home' :
-        this.router.navigate(['je-vends/ma-boutique/' + this.shop.uuid]);
-        break;
-      case 'product' :
-        this.router.navigate(['je-vends/ma-boutique/' + this.shop.uuid + '/produits']);
-      break;
-    }
-
-  }
-
 }

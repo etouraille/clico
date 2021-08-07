@@ -27,6 +27,11 @@ class Picture
      */
     private $product;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=VariantProduct::class, inversedBy="pictures")
+     */
+    private $variantProduct;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Picture
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getVariantProduct(): ?VariantProduct
+    {
+        return $this->variantProduct;
+    }
+
+    public function setVariantProduct(?VariantProduct $variantProduct): self
+    {
+        $this->variantProduct = $variantProduct;
 
         return $this;
     }

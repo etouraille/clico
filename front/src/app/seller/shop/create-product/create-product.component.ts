@@ -78,7 +78,6 @@ export class CreateProductComponent implements OnInit {
       this.store.select('product').subscribe((data: any) => {
         const elem = data.products.find(elem => elem.uuid === uuid);
         if(elem) {
-          console.log(elem);
           this.createProductFrom.patchValue(elem);
           elem.pictures.forEach((picture: any, index) => {
             this.addPicture();

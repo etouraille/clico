@@ -1,0 +1,11 @@
+<div>
+  <form [formGroup]="variantForm" (ngSubmit)="onSubmit()">
+    <div *ngFor="let variant of variantForm.controls; let i = index;">
+      <app-detail-variant (onRemove)="removeVariant(i)" [formControlName]="i"></app-detail-variant>
+    </div>
+    <button type="button" (click)="addVariant()"><mat-icon>add</mat-icon></button>
+    <div>
+      <button type="submit" class="btn-normal">Valider</button>
+    </div>
+  </form>
+</div>

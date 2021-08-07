@@ -24,7 +24,12 @@ function onFileupload(req, res) {
                 return sharp(file.data)
                     .toFile(__dirname + '/upload/' + id + '.png' )
             }).then(()=> {
-                return res.status(200).json({file: id + '.png'});
+                return sharp(file.data)
+                    .resize({width: 50, height: 50})
+                    .toFile(__dirname + '/upload/' + id + '-vignette.png')
+            }).then(()=> {
+
+                    return res.status(200).json({file: id + '.png'});
             })
             .catch((error) => {
                 return res.status(500).json(error);
@@ -51,10 +56,12 @@ function deletePicture( req, res ) {
     const filename = __dirname + '/upload/' + req.params.filename;
     const radical = req.params.filename.substr(0, req.params.filename.lastIndexOf('.'));
     const profile = __dirname + '/upload/' + radical + '-profile.png';
+    const vignette = __dirname + '/upload/' + radical + '-vignette.png';
 
     try {
-        fs.unlinkSync(filename);
-        fs.unlinkSync(profile);
+        fs.existsSync(filename) ? fs.unlinkSync(filename) : null;
+        fs.existsSync(profile) ? fs.unlinkSync(profile) : null;
+        fs.existsSync(vignette) ? fs.unlinkSync(vignette) : null;
     } catch(error) {
         return res.status(500).json({error});
     }

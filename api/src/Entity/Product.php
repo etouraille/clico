@@ -42,6 +42,18 @@ class Product implements Indentifiable
     private $shopUuid;
 
     /**
+     * @ORM\OneToMany(targetEntity=VariantName::class, mappedBy="product", orphanRemoval=true)
+     */
+    private $variantNames;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VariantProduct::class, mappedBy="product", orphanRemoval=false)
+     */
+    private $variantProducts;
+
+
+
+    /**
      * @return mixed
      */
     public function getShopUuid()
@@ -61,6 +73,8 @@ class Product implements Indentifiable
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
+        $this->variantNames = new ArrayCollection();
+        $this->variantProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,4 +161,66 @@ class Product implements Indentifiable
 
         return $this;
     }
+
+    /**
+     * @return Collection|VariantName[]
+     */
+    public function getVariantNames(): Collection
+    {
+        return $this->variantNames;
+    }
+
+    public function addVariantName(VariantName $variantName): self
+    {
+        if (!$this->variantNames->contains($variantName)) {
+            $this->variantNames[] = $variantName;
+            $variantName->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariantName(VariantName $variantName): self
+    {
+        if ($this->variantNames->removeElement($variantName)) {
+            // set the owning side to null (unless already changed)
+            if ($variantName->getProduct() === $this) {
+                $variantName->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VariantProduct[]
+     */
+    public function getVariantProducts(): Collection
+    {
+        return $this->variantProducts;
+    }
+
+    public function addVariantProduct(VariantProduct $variantProduct): self
+    {
+        if (!$this->variantProducts->contains($variantProduct)) {
+            $this->variantProducts[] = $variantProduct;
+            $variantProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariantProduct(VariantProduct $variantProduct): self
+    {
+        if ($this->variantProducts->removeElement($variantProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($variantProduct->getProduct() === $this) {
+                $variantProduct->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

@@ -21,10 +21,10 @@ const _productReducer = createReducer(
   }),
   on(deleteProduct, (state, { uuid }) => {
     const index = state.products.findIndex( elem => elem.uuid === uuid );
-    if(index>=0) {
+    if (index>=0) {
       state.products.splice(index, 1);
     }
-    return state;
+    return { products: state.products };
   }),
 );
 

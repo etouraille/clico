@@ -6,6 +6,9 @@ db:
 	docker exec -ti cc_db_1 /bin/bash
 require:
 	docker-compose run composer bash -c "composer require $(package)"
+requiredev:
+	 docker-compose run composer bash -c "composer require $(package) --dev"
+
 cdn:
 	docker exec -ti cc_cdn_1 /bin/bash
 

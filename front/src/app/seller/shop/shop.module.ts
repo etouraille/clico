@@ -13,11 +13,14 @@ import {SharedModule} from "@shared";
 import { ProductsComponent } from './products/products.component';
 import { CreateProductComponent } from './create-product/create-product.component';
 import { ProductComponent } from './product/product.component';
+import { VariantComponent } from './variant/variant.component';
+import { DetailVariantComponent } from './variant/detail-variant/detail-variant.component';
+import { VariantListComponent } from './variant-list/variant-list.component';
 
 
 
 @NgModule({
-  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent],
+  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent, VariantComponent, DetailVariantComponent, VariantListComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,

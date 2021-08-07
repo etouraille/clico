@@ -5,19 +5,19 @@ App\Entity\Product:
   properties:
     shopUuid:
       type: string
-      groups: [input, output]
+      groups: [input, output,pv]
     uuid:
       type: string
-      groups: [input, output]
+      groups: [input, output,pv]
     name:
       type: string
-      groups: [input, output]
+      groups: [input, output,pv]
     price:
       type: float
-      groups: [input, output]
+      groups: [input, output,pv]
     label:
       type: string
-      groups: [input, output]
+      groups: [input, output,pv]
     pictures:
       type: ArrayCollection<App\Entity\Picture>
-      groups: [input, output]
+      groups: [input, output,pv]
