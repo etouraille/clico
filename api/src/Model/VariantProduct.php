@@ -4,6 +4,9 @@
 namespace App\Model;
 
 
+use App\Entity\Picture;
+use Doctrine\Common\Collections\ArrayCollection;
+
 class VariantProduct
 {
     private $id;
@@ -13,6 +16,10 @@ class VariantProduct
     private $label;
     private $product;
 
+
+    public function __construct() {
+        // $this->pictures = new ArrayCollection();
+    }
     /**
      * @return mixed
      */
@@ -107,6 +114,10 @@ class VariantProduct
     public function setProduct($product): void
     {
         $this->product = $product;
+    }
+
+    public function addPicture(Picture $picture) {
+        $this->pictures->add($picture);
     }
 
 

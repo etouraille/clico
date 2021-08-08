@@ -18,6 +18,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatInputModule} from "@angular/material/input";
 import {MatTabsModule} from "@angular/material/tabs";
+import {PicturesComponent} from "../component/pictures/pictures.component";
 
 
 
@@ -29,6 +30,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     HeaderComponent,
     ImgComponent,
     CreateSelectComponent,
+    PicturesComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +70,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatInputModule,
     MatTabsModule,
     CreateSelectComponent,
+    PicturesComponent,
   ]
 })
 export class SharedModule { }

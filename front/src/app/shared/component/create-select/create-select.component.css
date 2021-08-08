@@ -17,12 +17,19 @@
   background-color: #70a6fd;
   border-radius: 40px;
   height: 1.8em;
-
 }
+
 .element > .element-content {
   position: relative;
   top: -7.5px;
   left: 5px;
+  padding-right: 4px;
+}
+
+.element.readonly > .element-content {
+  position: relative;
+  top: 2.5px;
+  left: 2.5px;
   padding-right: 4px;
 }
 

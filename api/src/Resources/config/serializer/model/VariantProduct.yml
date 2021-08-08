@@ -9,8 +9,8 @@ App\Model\VariantProduct:
     labels:
       type: array<App\Model\Label>
       groups: [input, output,pv]
-    picture:
-      type: array<App\Entity\Picture>
+    pictures:
+      type: ArrayCollection<App\Entity\Picture>
       groups: [ input, output,pv]
     price:
       type: float
@@ -19,5 +19,5 @@ App\Model\VariantProduct:
       type: string
       groups: [input, output,pv]
     product:
-      type: App\ENtity\Product
-      groups: [input, output,pv]
+      type: App\Entity\Product
+      groups: [input, output, pv]

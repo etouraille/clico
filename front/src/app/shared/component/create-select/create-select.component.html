@@ -1,11 +1,11 @@
 <div class="gainsboro" fxLayout="row wrap">
   <span *ngFor="let element of elementAdded;let i = index;">
-    <div class="element">
+    <div class="element" [class.readonly]="!edit">
       <span class="element-content">{{element.label}}</span>
-      <mat-icon (click)="remove(i)">remove_circle_outline</mat-icon>
+      <mat-icon *ngIf="edit" (click)="remove(i)">remove_circle_outline</mat-icon>
     </div>
   </span>
-  <div contenteditable="true" #editable class="editable" fxFlex></div>
+  <div [contentEditable]="edit ? 'true' : 'false' " #editable class="editable" fxFlex></div>
 </div>
 <ul class="list-group" *ngIf="isSuggested" fxLayout="column" fxLayoutAlign=" start" >
   <li class="list-group-item"><a (click)="addSuggested()" class="blue">ajouter {{suggestAddValue}}</a></li>

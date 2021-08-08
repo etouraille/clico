@@ -48,6 +48,13 @@ services:
               event: 'postRemove'
               priority: 501
 
+
+    
+    App\EventListener\ShopUuidListener:
+        autowire: true
+        tags:
+           - { name: kernel.event_listener, event: kernel.controller }
+
     jms_serializer.serialized_name_annotation_strategy:
         class: JMS\Serializer\Naming\SerializedNameAnnotationStrategy
         arguments:

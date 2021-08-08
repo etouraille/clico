@@ -17,7 +17,7 @@
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Image </th>
+        <th mat-header-cell *matHeaderCellDef> Produit </th>
         <td mat-cell *matCellDef="let element">
           {{ element.product.name}}
         </td>
@@ -27,7 +27,15 @@
       <ng-container matColumnDef="labels">
         <th mat-header-cell *matHeaderCellDef> Lablels</th>
         <td mat-cell *matCellDef="let element">
-          <app-create-select [(ngModel)]="element.labels"></app-create-select>
+          <app-create-select [edit]=false [(ngModel)]="element.labels"></app-create-select>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Lablels</th>
+        <td mat-cell *matCellDef="let element">
+          <button class="btn btn-normal" (click)="edit(element.id)">Modifier</button>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

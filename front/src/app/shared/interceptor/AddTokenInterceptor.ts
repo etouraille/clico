@@ -3,13 +3,15 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
 import { Observable, of, throwError } from 'rxjs';
 import { AuthService } from "../service/auth.service";
 import { Router } from "@angular/router";
-import { catchError } from "rxjs/operators";
+import {catchError, exhaustMap, mergeMap, take} from "rxjs/operators";
 import { environment } from "../../../environments/environment";
+import {Store} from "@ngrx/store";
+import {Shop} from "../model";
 
 @Injectable()
 export class AddTokenInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private store: Store<{shop: Shop}>) {
 
   }
 
@@ -24,12 +26,33 @@ export class AddTokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const userToken = this.authService.getUserToken();
+
+    /*
     const modifiedReq = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${userToken}`),
+      headers: req.headers.set('Authorization', `Bearer ${userToken}`).set('Shop', `Shop ~00000`),
       url: req.url.match(/https?/) ? req.url : environment.api + req.url,
     });
+
     return next
       .handle(modifiedReq)
-      .pipe(catchError(x=> this.handleAuthError(x))); //here use an arrow function, otherwise you may get "Cannot read property 'navigate' of undefined" on angular 4.4.2/net core 2/webpack 2.70
+      .pipe(catchError(x=> this.handleAuthError(x)));
+    */
+
+    return this.getShop().pipe(
+      take(1),
+      exhaustMap((data: any) => {
+        const modifiedReq = req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${userToken}`).set('Shop', `Shop ${data.shop.uuid}`),
+          url: req.url.match(/https?/) ? req.url : environment.api + req.url,
+        });
+        return next
+          .handle(modifiedReq)
+      })
+    ).pipe(catchError(x=> this.handleAuthError(x)));; //here use an arrow function, otherwise you may get "Cannot read property 'navigate' of undefined" on angular 4.4.2/net core 2/webpack 2.70
+  }
+
+  private getShop(): Observable<any> {
+    return this.store.select('shop');
   }
 }
+

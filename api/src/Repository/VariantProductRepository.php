@@ -39,4 +39,15 @@ class VariantProductRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function getOneByUuid($uuid) {
+        return $this->createQueryBuilder('vp')
+            ->join('vp.product', 'p')
+            ->leftJoin('vp.pictures', 'pictures')
+            ->where('vp.id = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

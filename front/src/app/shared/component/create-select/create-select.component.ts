@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, forwardRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {BehaviorSubject, fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, switchMap, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
@@ -20,12 +29,14 @@ import {ControlValueAccessor, FormArray, FormControl, NG_VALUE_ACCESSOR} from "@
 export class CreateSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
   @ViewChild('editable') editable: ElementRef;
+  @Input() edit : boolean = true;
 
   elementWaitingToAdd = [];
   suggestAddValue : string;
   isSuggested = false;
   elementAdded: any = [];
   subject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
 
   propagateChange = (_: any) => {};
 

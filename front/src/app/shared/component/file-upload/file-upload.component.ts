@@ -1,26 +1,49 @@
-import { Component, Input, Output } from '@angular/core';
+import {Component, forwardRef, Input, OnInit, Output} from '@angular/core';
 import { finalize } from "rxjs/operators";
 import { HttpClient, HttpEventType } from "@angular/common/http";
 import { EventEmitter } from "@angular/core";
 import { Subscription } from "rxjs";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: "file-upload.component.html",
-  styleUrls: ["file-upload.component.scss"]
+  styleUrls: ["file-upload.component.scss"],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FileUploadComponent),
+      multi: true
+    }
+  ]
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements ControlValueAccessor{
 
   @Input()
   requiredFileType:string;
 
   @Output() onUploadComplete = new EventEmitter<any>();
 
+  icon = '';
   fileName = '';
   uploadProgress:number;
   uploadSub: Subscription;
 
+  propagateChange = (_: any) => {};
+
   constructor(private http: HttpClient) {}
+
+  writeValue(value: any) {
+    if(value) {
+      this.icon = value.file;
+    }
+  }
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) {
+  }
 
   onFileSelected(event) {
     const file:File = event.target.files[0];
@@ -42,6 +65,8 @@ export class FileUploadComponent {
         if (event.type == HttpEventType.UploadProgress) {
           this.uploadProgress = Math.round(100 * (event.loaded / event.total));
         } else if (event.type === HttpEventType.Response) {
+          this.propagateChange({ id: 1, file: event.body.file});
+          this.icon = event.body.file;
           this.onUploadComplete.emit(event.body.file);
         }
       })

@@ -23,6 +23,7 @@ class PostRemovePictureListener
             return;
         }
 
+        /*
         $file = $entity->getFile();
         $url = "http://cdn/picture/" . $file;
 
@@ -37,7 +38,7 @@ class PostRemovePictureListener
         curl_close($curl);
 
         $em = $args->getObjectManager();
-
+        */
     }
 }
 

@@ -7,8 +7,9 @@ import {CreateProductComponent} from "./create-product/create-product.component"
 import {ProductComponent} from "./product/product.component";
 import { ProductResolverService } from "../../shared/resolver/product-resolver.service";
 import {SellerComponent} from "../seller.component";
-import {VariantResolverService} from "@shared";
+import {VariantProductResolverService, VariantResolverService} from "@shared";
 import {VariantListComponent} from "./variant-list/variant-list.component";
+import {EditVariantProductComponent} from "./edit-variant-product/edit-variant-product.component";
 
 
 const shopRoutes: Routes = [
@@ -29,6 +30,13 @@ const shopRoutes: Routes = [
         component: ProductComponent,
         resolve: {
           variants: VariantResolverService,
+        }
+      },
+      {
+        path :  'variant/:vuuid',
+        component: EditVariantProductComponent,
+        resolve: {
+          variantProduct: VariantProductResolverService,
         }
       },
       {

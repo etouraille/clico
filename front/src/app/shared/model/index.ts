@@ -4,3 +4,4 @@ export * from './picture';
 export * from './product';
 export * from './shop';
 export * from './variant';
+export * from './variant-product';

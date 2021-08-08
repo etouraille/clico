@@ -16,11 +16,11 @@ import { ProductComponent } from './product/product.component';
 import { VariantComponent } from './variant/variant.component';
 import { DetailVariantComponent } from './variant/detail-variant/detail-variant.component';
 import { VariantListComponent } from './variant-list/variant-list.component';
-
+import { EditVariantProductComponent } from './edit-variant-product/edit-variant-product.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent, VariantComponent, DetailVariantComponent, VariantListComponent],
+  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent, VariantComponent, DetailVariantComponent, VariantListComponent, EditVariantProductComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,

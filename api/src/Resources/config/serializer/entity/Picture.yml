@@ -3,6 +3,10 @@ App\Entity\Picture:
   xml_root_name: page
   access_order: alphabetical
   properties:
+    id:
+      type: integer
+      groups: [input, output,pv]
     file:
       type: string
       groups: [input, output,pv]
+

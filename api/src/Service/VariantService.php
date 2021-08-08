@@ -90,6 +90,9 @@ class VariantService
         }
         foreach($variantProducts as $variantProduct) {
             if (!$this->isVariantProductIncludeInVariants($variantProduct, $variants)) {
+                foreach($variantProduct->getPictures() as $image) {
+                    $this->em->remove($image);
+                }
                 $this->em->remove($variantProduct);
             }
             $this->em->flush();
@@ -199,6 +202,20 @@ class VariantService
             $ret[] = $variantProduct;
         }
         return $ret;
+    }
+
+
+    public function getVariantProduct($uuid) {
+        $vap = $this->em->getRepository(VariantProduct::class)->getOneByUuid($uuid);
+        $res = new \App\Model\VariantProduct();
+        $res = UtilsService::mapFromTo($vap, $res, ['id' => 'id', 'label' => 'label', 'price'=> 'price', 'product' => 'product' , 'pictures' => 'pictures']);
+        $res->setLabels(
+            $this->em->getRepository(VariantLabel::class)
+                ->getLabelsFromVariantMapping(
+                    $vap->getVariantMapping(), $this->logger
+                )
+        );
+        return $res;
     }
 
 }

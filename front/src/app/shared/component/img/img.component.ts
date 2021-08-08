@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 
 @Component({
@@ -6,7 +6,7 @@ import {environment} from "../../../../environments/environment";
   templateUrl: './img.component.html',
   styleUrls: ['./img.component.css']
 })
-export class ImgComponent implements OnInit {
+export class ImgComponent implements OnInit, OnChanges {
 
   @Input() file: string;
   @Input() size: string = 'profile' // 'upload' || 'vignette'
@@ -16,6 +16,10 @@ export class ImgComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.setSrc();
+  }
+
+  ngOnChanges() {
     this.setSrc();
   }
 
@@ -33,5 +37,4 @@ export class ImgComponent implements OnInit {
         break;
     }
   }
-
 }

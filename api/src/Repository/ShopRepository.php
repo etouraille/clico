@@ -30,6 +30,18 @@ class ShopRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findOneByUuidAndUser( $uuid, $owner ) {
+        return $this->createQueryBuilder('s')
+            ->join('s.owner', 'u')
+            ->where('s.uuid = :uuid')
+            ->andWhere('u.id = :userId' )
+            ->setParameter('userId', $owner->getId())
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return Shop[] Returns an array of Shop objects
     //  */

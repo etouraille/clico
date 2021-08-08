@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Picture;
 use App\Entity\Shop;
 use App\Entity\Product;
 use App\Entity\VariantLabel;
@@ -10,6 +11,7 @@ use App\Entity\VariantName;
 use App\Model\Label;
 use App\Model\Query;
 use App\Model\Variant;
+use App\Model\VariantProduct;
 use App\Model\Variants;
 use App\Service\UtilsService;
 use App\Service\VariantService;
@@ -25,7 +27,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class VariantController
+class VariantController implements ShopAuthentifiedController
 {
 
     /**
@@ -179,4 +181,76 @@ class VariantController
     {
         return $service->getVariantProducts(0, 20);
     }
+
+    /**
+     * @Get("/api/variant-product/{uuid}")
+     * @View( serializerGroups={"pv"})
+     * @return array
+     */
+    public function getVariantProduct($uuid, VariantService $service )
+    {
+        return $service->getVariantProduct($uuid);
+    }
+
+    /**
+     * @Patch("/api/variant-product")
+     * @ParamConverter(
+    "variantProduct",
+    class="App\Model\VariantProduct",
+    converter="fos_rest.request_body",
+    options={"deserializationContext"={"groups"={"pv"} } }
+    )
+     * @View( serializerGroups={"pv"})
+     * @return VariantProduct
+     */
+    public function patchVariantProduct(VariantProduct $variantProduct, VariantService $service, EntityManagerInterface $em, LoggerInterface $logger) {
+       $entity = $em->getRepository(\App\Entity\VariantProduct::class)->getOneByUuid($variantProduct->getId());
+       if(!$entity) {
+           throw new BadRequestHttpException('Variant Product doesn t exists');
+       }
+       $entity = UtilsService::mapFromTo($variantProduct, $entity , ['label'=> 'label', 'price' => 'price']);
+       // picture case
+        // on cerche les image qui on été rajoutés.
+        // parmis tout les variant produit quel sont les image qui n'existe pas.
+        // complementaire.
+        $sendPictures = $variantProduct->getPictures()->toArray();
+        $pictureToRemove = [];
+        $logger->error('here [picture]', [count($variantProduct->getPictures())]);
+        foreach($entity->getPictures() as $storedPicture ) {
+            $tab = array_filter($sendPictures, function($pic) use($storedPicture, $logger) {
+                $logger->error('here [pic]', [$pic]);
+                $logger->error('here [stored]', [$storedPicture]);
+                $pic->getId() === $storedPicture->getId() && $pic->getFile() === $storedPicture->getFile();
+            });
+            if(count($tab) === 0) {
+                $pictureToRemove[] = $storedPicture;
+            }
+        }
+        $pictureToAdd = [];
+        foreach($sendPictures as $sendPicture) {
+            $tab = array_filter($entity->getPictures()->toArray(), function($pic) use ($sendPicture) {
+                $pic->getId() === $sendPicture->getId() && $pic->getFile() === $sendPicture->getFile();
+            });
+            if(count($tab) === 0) {
+                $pictureToAdd[] = $sendPicture;
+            }
+        }
+        $logger->error('here [pictureTo Add ]', $pictureToAdd);
+        foreach($pictureToRemove as $toRemovePicture) {
+            $entity->removePicture($toRemovePicture);
+            $em->remove($toRemovePicture);
+        }
+        foreach($pictureToAdd as $toAddPicture) {
+            $pic = new Picture();
+            $pic->setFile($toAddPicture->getFile());
+            $entity->addPicture($pic);
+            $em->persist($pic);
+        }
+        $em->persist($entity);
+        $em->flush();
+        return $service->getVariantProduct($variantProduct->getId());
+
+        // parmis toute les image quelle sont celle qui ne sont plus dans le variant produt
+    }
+
 }

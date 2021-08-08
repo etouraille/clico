@@ -57,6 +57,7 @@ class UtilsServiceTest extends WebTestCase
     }
 
     public function testContains() {
+        $this->init();
         $a = [1,'a', 'c'];
         $b = [1, 'c'];
         $this->assertTrue(UtilsService::contains($a, $b));
