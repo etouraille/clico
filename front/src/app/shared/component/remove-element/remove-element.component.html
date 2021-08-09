@@ -1,0 +1,11 @@
+<div>
+  <select class="form-control" (change)="onChange($event)">
+    <option *ngFor="let variant of availableVariants" [value]="variant.id">{{ variant.name}}</option>
+  </select>
+  <span *ngFor="let name of names;let i=index;">
+    {{ name.name }}
+    <select class="form-control">
+      <option *ngFor="let label of name.labels" [value]="label.id">{{label.label}}</option>
+    </select>
+  </span>
+</div>

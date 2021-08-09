@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, Output} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {Store} from "@ngrx/store";
-import {Product} from "@shared";
+import {Product, Variant} from "@shared";
 import {HttpClient} from "@angular/common/http";
+import { EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'app-variant',
@@ -12,15 +13,18 @@ import {HttpClient} from "@angular/common/http";
 })
 export class VariantComponent implements OnInit {
 
-  variants = [];
+  @Output() variantsChange = new EventEmitter<Variant[]>();
+  @Input() variants = [];
   variantForm = new FormArray([]);
   product: Product;
+
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private store: Store<{ product: Product}>,
     private http: HttpClient,
+    private cdref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +75,9 @@ export class VariantComponent implements OnInit {
       const variants = data.variants.variants;
       this.addVariants(variants);
       this.variantForm.setValue(data.variants.variants);
+      this.variantsChange.emit(data.variants.variants);
       console.log(this.variantForm.value);
+      this.cdref.detectChanges();
     })
   }
 
@@ -81,6 +87,7 @@ export class VariantComponent implements OnInit {
       .subscribe((data:any) => {
       console.log(data);
       this.variantForm.patchValue(data.variants);
+      this.variantsChange.emit(data.variants);
     })
   }
 

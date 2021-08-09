@@ -19,6 +19,7 @@ import { SettingComponent } from './setting/setting.component';
 import { ChangePasswordComponent } from './setting/change-password/change-password.component';
 import { ImgComponent } from './shared/component/img/img.component';
 import { PicturesComponent } from './shared/component/pictures/pictures.component';
+import { RemoveElementComponent } from './shared/component/remove-element/remove-element.component';
 
 @NgModule({
   declarations: [

@@ -34,7 +34,10 @@
       </form>
     </mat-tab>
     <mat-tab label="Variants">
-      <app-variant></app-variant>
+      <app-variant (variantsChange)="variants=$event"></app-variant>
+    </mat-tab>
+    <mat-tab label="Suppresion">
+      <app-remove-variant [variants]="variants"></app-remove-variant>
     </mat-tab>
   </mat-tab-group>
 

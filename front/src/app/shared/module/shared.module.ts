@@ -19,6 +19,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatInputModule} from "@angular/material/input";
 import {MatTabsModule} from "@angular/material/tabs";
 import {PicturesComponent} from "../component/pictures/pictures.component";
+import {RemoveElementComponent} from "../component/remove-element/remove-element.component";
 
 
 
@@ -31,6 +32,7 @@ import {PicturesComponent} from "../component/pictures/pictures.component";
     ImgComponent,
     CreateSelectComponent,
     PicturesComponent,
+    RemoveElementComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,7 @@ import {PicturesComponent} from "../component/pictures/pictures.component";
     MatTabsModule,
     CreateSelectComponent,
     PicturesComponent,
+    RemoveElementComponent,
   ]
 })
 export class SharedModule { }

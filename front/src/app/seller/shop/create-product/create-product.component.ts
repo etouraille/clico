@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterContentChecked, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {addProduct, Product, Shop} from "@shared";
+import {addProduct, Product, Shop, Variant} from "@shared";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -22,6 +22,8 @@ export class CreateProductComponent implements OnInit {
     price: [0, [Validators.required]],
     shopUuid: ['', Validators.required],
   })
+
+  variants: Variant[] = [];
 
   constructor(
     private fb: FormBuilder,

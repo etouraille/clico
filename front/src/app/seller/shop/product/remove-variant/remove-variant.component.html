@@ -1,0 +1,8 @@
+<div class="row">
+  <form [formGroup]="form" >
+    <div formArrayName="removed">
+      <app-remove-element [variants]="variants" *ngFor="let remove of removed.controls; let i = index" formControlName="i"></app-remove-element>
+    </div>
+    <button type="button" class="btn" (click)="addRemove()">+</button>
+  </form>
+</div>
