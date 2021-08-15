@@ -1,0 +1,14 @@
+<mat-form-field appearance="fill">
+  <mat-label>Variant</mat-label>
+  <input type="text"
+         placeholder="Séléctionner un variant"
+         aria-label="Number"
+         matInput
+         [formControl]="myControl"
+         [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelected($event)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option.variant}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

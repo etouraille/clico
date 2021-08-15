@@ -8,5 +8,5 @@ App\Entity\Picture:
       groups: [input, output,pv]
     file:
       type: string
-      groups: [input, output,pv]
+      groups: [input, output,pv, product]
 

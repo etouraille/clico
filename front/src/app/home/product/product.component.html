@@ -1,0 +1,19 @@
+<div class="content">
+  <mat-card *ngIf="product">
+    <mat-card-title>{{ product.name}}</mat-card-title>
+    <mat-card-content>
+      <app-img [file]="product.pictures[0].file"></app-img>
+      {{ product.label}} {{product.price}}: &euro;
+      <app-front-variant [product]="product" (change)="productVariant=$event"></app-front-variant>
+    </mat-card-content>
+  </mat-card>
+  <div *ngIf="!productVariant">Indisponible</div>
+  <mat-card *ngIf="productVariant">
+    Here
+    <mat-card-title>{{ productVariant?.name}}</mat-card-title>
+    <mat-card-content>
+      <app-img [file]="productVariant?.pictures[0]?.file"></app-img>
+      {{ productVariant?.label}} {{productVariant?.price}}: &euro;
+    </mat-card-content>
+  </mat-card>
+</div>

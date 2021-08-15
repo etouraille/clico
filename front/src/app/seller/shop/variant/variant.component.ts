@@ -2,9 +2,10 @@ import {ChangeDetectorRef, Component, Input, OnInit, Output} from '@angular/core
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {Store} from "@ngrx/store";
-import {Product, Variant} from "@shared";
+import {Product, UtilsService, Variant} from "@shared";
 import {HttpClient} from "@angular/common/http";
 import { EventEmitter } from "@angular/core";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-variant',
@@ -15,7 +16,7 @@ export class VariantComponent implements OnInit {
 
   @Output() variantsChange = new EventEmitter<Variant[]>();
   @Input() variants = [];
-  variantForm = new FormArray([]);
+  variantForm = this.fb.group({  variants:  new FormArray([])});
   product: Product;
 
 
@@ -24,7 +25,7 @@ export class VariantComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<{ product: Product}>,
     private http: HttpClient,
-    private cdref: ChangeDetectorRef
+    private utilsService: UtilsService,
   ) { }
 
   ngOnInit(): void {
@@ -32,24 +33,38 @@ export class VariantComponent implements OnInit {
     this.setVariants();
   }
 
+  get variantArray() {
+    return this.variantForm.get('variants') as FormArray;
+  }
+
   addVariant(ret?: any): void {
+    let index = this.variantArray.length;
     if(!ret) {
-      this.variantForm.push(new FormControl({id : '' , name : '', labels: []}));
+      this.variantArray.push(new FormControl({id : '' , type: '', name : '', rank: index , labels: []}));
     } else {
-      this.variantForm.push(new FormControl({id : '', name : '', labels: ret}));
+      this.variantArray.push(new FormControl({id : '', type: '', name : '', rank: index, labels: ret}));
     }
   }
 
   removeVariant(index: number) {
-    this.variantForm.controls.splice(index,1)
-    this.variantForm.value.splice(index, 1);
+    this.variantArray.removeAt(index);
+    let values = this.variantForm.value.variants;
+    values = this.utilsService.reorderRemove(values, index);
+    this.variantForm.setValue({ variants: values});
+
+    // this.variantForm.controls.splice(index,1)
+    // this.variantForm.value.splice(index, 1);
   }
 
   addVariants(variants: any ) : void {
     variants.map((variant) => {
       const ret = [];
       variant.labels.map(() => {
-        const labelForm = new FormControl({id: new FormControl(''), label: new FormControl('')});
+        const labelForm = new FormControl({
+          id: new FormControl(''),
+          label: new FormControl(''),
+          rank: new FormControl(''),
+        });
         ret.push( labelForm );
       })
       this.addVariant(ret);
@@ -69,26 +84,39 @@ export class VariantComponent implements OnInit {
   }
 
   setVariants(): void {
-    console.log(this.variantForm);
     this.route.data.subscribe((data: any) => {
-      console.log(data.variants.variants);
-      const variants = data.variants.variants;
-      this.addVariants(variants);
-      this.variantForm.setValue(data.variants.variants);
+      this.addVariants(data.variants.variants);
+      this.variantForm.setValue({ variants: data.variants.variants});
       this.variantsChange.emit(data.variants.variants);
-      console.log(this.variantForm.value);
-      this.cdref.detectChanges();
+      // this.cdref.detectChanges();
     })
   }
 
   onSubmit(): void {
-    console.log('submit');
-    this.http.patch('/api/product/' + this.product.uuid + '/variant', { variants : this.variantForm.value})
+    this.http.patch('/api/product/' + this.product.uuid + '/variant', { variants : this.variantForm.value.variants})
       .subscribe((data:any) => {
-      console.log(data);
       this.variantForm.patchValue(data.variants);
       this.variantsChange.emit(data.variants);
     })
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    //if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+
+      let values = this.variantArray.controls.map(elem => elem.value);
+      this.utilsService.reorderMove(values, event.previousIndex, event.currentIndex);
+      this.variantForm.setValue({variants: values});
+
+      //console.log(this.variantArray.controls);
+
+    /*} else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex, event.currentIndex);
+    }*/
   }
 
 }

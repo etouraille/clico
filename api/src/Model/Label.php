@@ -9,6 +9,7 @@ class Label
     public $id;
     public $label;
     public $name;
+    public $rank;
 
     /**
      * @return mixed
@@ -57,6 +58,23 @@ class Label
     {
         $this->name = $name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @param mixed $rank
+     */
+    public function setRank($rank): void
+    {
+        $this->rank = $rank;
+    }
+
 
 
 }

@@ -19,7 +19,6 @@ export class SellerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log( 'init');
     this.setCurrentShop();
   }
 

@@ -18,10 +18,11 @@ import { DetailVariantComponent } from './variant/detail-variant/detail-variant.
 import { VariantListComponent } from './variant-list/variant-list.component';
 import { EditVariantProductComponent } from './edit-variant-product/edit-variant-product.component';
 import { RemoveVariantComponent } from './product/remove-variant/remove-variant.component';
+import { AddVariantComponent } from './product/add-variant/add-variant.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent, VariantComponent, DetailVariantComponent, VariantListComponent, EditVariantProductComponent, RemoveVariantComponent],
+  declarations: [HomeComponent, ProductsComponent, CreateProductComponent, ProductComponent, VariantComponent, DetailVariantComponent, VariantListComponent, EditVariantProductComponent, RemoveVariantComponent, AddVariantComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,

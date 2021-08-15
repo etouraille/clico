@@ -11,4 +11,7 @@ App\Model\Label:
       groups: [input, output, pv]
     name:
       type: string
-      groups: [pv]
+      groups: [pv, output]
+    rank:
+      type: integer
+      groups: [ input, output ]

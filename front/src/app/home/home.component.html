@@ -2,9 +2,16 @@
   <div class="header">
     <div class="right"><button (click)="goSeller()" class="btn btn-normal">Je vends</button></div>
   </div>
-  <div class="content">
-    <div class="search">
-      <input class="search" /><button class="btn btn-search">Rechercher</button>
-    </div>
+  <div class="content" fxLayout="row" fxLayoutAlign="space-around center">
+    <mat-card *ngFor="let product of products" (click)="goProduct(product.uuid)" >
+      <mat-card-title>{{ product.name}}</mat-card-title>
+      <mat-card-content>
+        <div><app-img [size]="'vignette'" [file]="product.pictures[0].file "></app-img></div>
+        <div>{{product.label}}</div>
+        <div>Trouver le chez <a class="link" (click)="goShop(product.shop.uuid)">{{product.shop.name}}</a> , {{ product.shop.address}}</div>
+        <div>Pour {{product.price}} &euro;</div>
+
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

@@ -1,5 +1,11 @@
 <div fxLayout="row" fxLayoutAlign="space-around none" [formGroup]="variant">
   <div fxFlex="200px"><input class="form-control" formControlName="name"/></div>
-  <div fxFlex="calc(100% - 250px)"><app-create-select formControlName="labels"></app-create-select></div>
+  <div fxFlex="150px">
+    <select class="form-control" formControlName="type">
+      <option *ngFor="let type of variantTypes" [value]="type">{{type}}</option>
+    </select>
+  </div>
+  <div fxFlex="calc(100% - 500px)"><app-create-select formControlName="labels"></app-create-select></div>
   <div fxFlex="50px"><mat-icon (click)="remove()">remove_circle_outline</mat-icon></div>
+
 </div>

@@ -24,7 +24,6 @@ export class AuthGuard implements CanLoad, CanActivate {
     return this.authService.isLogged().pipe(
       take(1),
       map(can => {
-        console.log( can);
         if (!can) {
           this.router.navigate(['connexion']);
         }
@@ -37,7 +36,6 @@ export class AuthGuard implements CanLoad, CanActivate {
     return this.authService.isLogged().pipe(
       take(1),
       map(can => {
-        console.log( can );
         if(!can) {
           this.router.navigate(['connexion']);
         }

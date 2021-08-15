@@ -9,6 +9,26 @@ class Variant
     public $id;
     public $name;
     public $labels;
+    public $rank;
+    public $type;
+
+    /**
+     * @return mixed
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @param mixed $rank
+     */
+    public function setRank($rank): void
+    {
+        $this->rank = $rank;
+    }
+
+
 
     /**
      * @return mixed
@@ -65,6 +85,22 @@ class Variant
 
     public function addLabel($label) {
         $this->labels[] = $label;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
     }
 
 

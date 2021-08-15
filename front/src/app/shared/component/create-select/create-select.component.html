@@ -1,11 +1,15 @@
-<div class="gainsboro" fxLayout="row wrap">
-  <span *ngFor="let element of elementAdded;let i = index;">
-    <div class="element" [class.readonly]="!edit">
+<div class="gainsboro" fxLayout="row wrap"
+     cdkDropList
+     [cdkDropListData]="elementAdded"
+      (cdkDropListDropped)="drop($event)"
+>
+  <span cdkDrag *ngFor="let element of elementAdded;let i = index;" >
+    <div  class="element" [class.readonly]="!edit">
       <span class="element-content">{{element.label}}</span>
       <mat-icon *ngIf="edit" (click)="remove(i)">remove_circle_outline</mat-icon>
     </div>
   </span>
-  <div [contentEditable]="edit ? 'true' : 'false' " #editable class="editable" fxFlex></div>
+  <div [contentEditable]="edit" #editable class="editable" fxFlex></div>
 </div>
 <ul class="list-group" *ngIf="isSuggested" fxLayout="column" fxLayoutAlign=" start" >
   <li class="list-group-item"><a (click)="addSuggested()" class="blue">ajouter {{suggestAddValue}}</a></li>

@@ -15,6 +15,40 @@ class VariantProduct
     private $price;
     private $label;
     private $product;
+    private $removed;
+    private $variantMapping;
+
+    /**
+     * @return mixed
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * @param mixed $removed
+     */
+    public function setRemoved($removed): void
+    {
+        $this->removed = $removed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVariantMapping()
+    {
+        return $this->variantMapping;
+    }
+
+    /**
+     * @param mixed $variantMapping
+     */
+    public function setVariantMapping($variantMapping): void
+    {
+        $this->variantMapping = $variantMapping;
+    }
 
 
     public function __construct() {
@@ -31,9 +65,10 @@ class VariantProduct
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -47,9 +82,10 @@ class VariantProduct
     /**
      * @param mixed $labels
      */
-    public function setLabels($labels): void
+    public function setLabels($labels): self
     {
         $this->labels = $labels;
+        return $this;
     }
 
     /**
@@ -63,9 +99,10 @@ class VariantProduct
     /**
      * @param mixed $pictures
      */
-    public function setPictures($pictures): void
+    public function setPictures($pictures): self
     {
         $this->pictures = $pictures;
+        return $this;
     }
 
     /**
@@ -79,9 +116,10 @@ class VariantProduct
     /**
      * @param mixed $price
      */
-    public function setPrice($price): void
+    public function setPrice($price): self
     {
         $this->price = $price;
+        return $this;
     }
 
     /**
@@ -95,9 +133,11 @@ class VariantProduct
     /**
      * @param mixed $label
      */
-    public function setLabel($label): void
+    public function setLabel($label): self
     {
         $this->label = $label;
+        return $this;
+
     }
 
     /**

@@ -1,0 +1,7 @@
+<div>
+  <div *ngFor="let variant of variants">
+    {{ variant.name}}<mat-radio-group [ngModel]="values[variant.name]"><span *ngFor="let label of variant.labels">
+    <mat-radio-button [name]="variant.name" [value]="label.id" (change)="onChange($event, variant.name)"></mat-radio-button>{{label.label}}</span>
+  </mat-radio-group>
+  </div>
+</div>

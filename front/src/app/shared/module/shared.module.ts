@@ -20,6 +20,11 @@ import {MatInputModule} from "@angular/material/input";
 import {MatTabsModule} from "@angular/material/tabs";
 import {PicturesComponent} from "../component/pictures/pictures.component";
 import {RemoveElementComponent} from "../component/remove-element/remove-element.component";
+import {MatRadioModule} from "@angular/material/radio";
+import {FrontVariantComponent} from "../component/front/front-variant/front-variant.component";
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {VariantAutocompleteComponent} from "../component/variant-autocomplete/variant-autocomplete.component";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 
@@ -33,6 +38,8 @@ import {RemoveElementComponent} from "../component/remove-element/remove-element
     CreateSelectComponent,
     PicturesComponent,
     RemoveElementComponent,
+    FrontVariantComponent,
+    VariantAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +59,10 @@ import {RemoveElementComponent} from "../component/remove-element/remove-element
     MatProgressSpinnerModule,
     MatInputModule,
     MatTabsModule,
+    MatRadioModule,
+    DragDropModule,
+    MatAutocompleteModule,
+
   ],
   exports: [
     CreateShopComponent,
@@ -71,9 +82,15 @@ import {RemoveElementComponent} from "../component/remove-element/remove-element
     MatProgressSpinnerModule,
     MatInputModule,
     MatTabsModule,
+    MatButtonModule,
     CreateSelectComponent,
     PicturesComponent,
     RemoveElementComponent,
+    MatRadioModule,
+    FrontVariantComponent,
+    DragDropModule,
+    VariantAutocompleteComponent,
+    MatAutocompleteModule,
   ]
 })
 export class SharedModule { }

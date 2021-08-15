@@ -15,16 +15,25 @@ import { EventEmitter } from "@angular/core";
 })
 export class DetailVariantComponent implements OnInit, ControlValueAccessor, AfterViewInit {
 
+  variantTypes = ['radio', 'select', 'color', 'picture'];
+
   constructor(private fb: FormBuilder) { }
 
   @Output() onRemove = new EventEmitter<null>();
+  @Input() rank: number;
 
   variant: FormGroup;
 
   propagateChange = (_: any) => {};
 
   ngOnInit(): void {
-    this.variant = new FormGroup({id: new FormControl(''), name: new FormControl(''), labels: new FormControl([])});
+    this.variant = new FormGroup({
+      id: new FormControl(''),
+      type: new FormControl(''),
+      name: new FormControl(''),
+      rank : new FormControl(''),
+      labels: new FormControl([])
+    });
 
   }
 
@@ -38,12 +47,12 @@ export class DetailVariantComponent implements OnInit, ControlValueAccessor, Aft
 
 
   writeValue(value: any) {
-    console.log(value.labels);
     if (value) {
       if(value.labels && Array.isArray(value.labels)) {
-        value.labels.forEach(() => {
-          this.variant.get('labels').value.push(new FormGroup({id : new FormControl(''), label: new FormControl('')}));
-        })
+        let repeat = value.labels.length - this.variant.get('labels').value.length
+        for(let i = 0;i< repeat;i++) {
+          this.variant.get('labels').value.push(new FormGroup({id: new FormControl(''), label: new FormControl('')}));
+        }
       } else {
         this.variant.get('labels').value.push([]);
       }

@@ -1,8 +1,14 @@
 <div class="row">
-  <form [formGroup]="form" >
-    <div formArrayName="removed">
-      <app-remove-element [variants]="variants" *ngFor="let remove of removed.controls; let i = index" formControlName="i"></app-remove-element>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div formArrayName="removing">
+      <div *ngFor="let remove of removed.controls; let i = index">
+        <app-remove-element [variants]="variants"  [formControlName]="i"></app-remove-element>
+        <button mat-icon-button (click)="removeAt(i)">
+          <mat-icon >remove_circle_outline</mat-icon>
+        </button>
+      </div>
     </div>
     <button type="button" class="btn" (click)="addRemove()">+</button>
+    <button type="submit" class="btn">Save</button>
   </form>
 </div>

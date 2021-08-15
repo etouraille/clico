@@ -1,0 +1,11 @@
+<div class="content">
+  <form [formGroup]="addVariantForm">
+    <div formArrayName="variants">
+      <div *ngFor="let variant of variants.controls;let i=index">
+        <app-variant-autocomplete  [formControlName]="i"></app-variant-autocomplete>
+        <mat-icon (click)="remove(i)">remove_circle_outline</mat-icon>
+      </div>
+    </div>
+    <mat-icon (click)="add()">add_circle_outline</mat-icon>
+  </form>
+</div>

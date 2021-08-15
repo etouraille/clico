@@ -5,31 +5,31 @@ App\Entity\Shop:
   properties:
     uuid:
       type: string
-      groups: [output]
+      groups: [output, input, product]
     name:
       type: string
-      groups: [output]
+      groups: [output, input, product]
     type:
       type: string
-      groups: [ output ]
+      groups: [ output, input, product ]
     address:
       type: string
-      groups: [ output ]
+      groups: [ output, input, product ]
     lat:
       type: float
-      groups: [ output ]
+      groups: [ output, input, product ]
     lng:
         type: float
-        groups: [ output ]
+        groups: [ output, input, product ]
     file:
       type: string
-      groups: [output]
+      groups: [output, input, product]
     email:
       type: string
-      groups: [output]
+      groups: [output, input, product]
     phone:
       type: string
-      groups: [output]
+      groups: [output, input, product]
     mobile:
       type: string
-      groups: [output]
+      groups: [output, inputs, product]

@@ -131,11 +131,16 @@ class UtilsService
     }
     // a contains b
     // tout les element de b sont contenus dans a.
-    public static function contains($a, $b) {
+    public static function contains($a, $b, &$comp = []) {
         $ret = true;
         foreach($b as $elem ) {
             if(false === array_search($elem, $a)) {
                 $ret = false;
+            }
+        }
+        foreach($a as $elem) {
+            if(false === array_search($elem, $b)) {
+                $comp[] = $elem;
             }
         }
         return $ret;
@@ -152,6 +157,21 @@ class UtilsService
                 $ret[] = $comb;
             }
         }
-        return array_unique($ret, SORT_REGULAR);
+
+        $res = array_unique($ret, SORT_REGULAR);
+        return self::sort($res);
+    }
+
+    private static function sort($tab, $precise = false) {
+        usort($tab, function($a,$b) use($precise) {
+            if(count($a) < count($b)) return -1;
+            if(count($a) > count($b)) return 1;
+            elseif(count($a) === count($b)) {
+                return $precise ? strcmp(implode('', $a), implode('', $b)) : 0;
+            } else {
+                return 0;
+            }
+        });
+        return $tab;
     }
 }

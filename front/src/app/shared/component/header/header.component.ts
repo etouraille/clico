@@ -47,7 +47,6 @@ export class HeaderComponent implements OnInit {
     const jwt = this.utils.parseJwt(this.auth.getUserToken());
     this.email = jwt.email;
     const emailMd5 = md5(this.email.toLowerCase());
-    console.log( emailMd5 );
     this.gravatar = 'https://www.gravatar.com/avatar/' + emailMd5;
   }
 

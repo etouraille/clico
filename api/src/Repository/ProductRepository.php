@@ -33,6 +33,31 @@ class ProductRepository extends ServiceEntityRepository
 
     }
 
+    public function getProductsArround($lat, $lng) {
+        return $this->createQueryBuilder('p')
+            ->join('p.shop', 'shop')
+            ->select('p, GEO_DISTANCE(shop.lat, shop.lng , :lat, :lng) as distance')
+            ->having('distance < 10000')
+            ->setParameter('lat', $lat)
+            ->setParameter('lng', $lng)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOneByUuidWithVariant($uuid) {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.pictures', 'picture')
+            ->leftJoin('p.variantProducts', 'vp')
+            ->leftJoin('vp.pictures', 'vps_picture')
+            ->join('p.shop', 'shop')
+            ->where('p.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
+
     public function getProductByShopUuidAndFilterPaginate(
         $uuid,
         $filter= '',

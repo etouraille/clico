@@ -29,7 +29,7 @@ class VariantLabelRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getLabelsFromVariantMapping($mapping, $logger) {
+    public function getLabelsFromVariantMapping($mapping) {
         $tab = [];
         $keys = explode('#', $mapping);
         foreach($keys as $key) {
@@ -45,8 +45,6 @@ class VariantLabelRepository extends ServiceEntityRepository
             ->getResult()
         ;
         $ret = [];
-        $logger->error('here [tab]', $tab);
-        $logger->error('here [count]' , [count($res)]);
         foreach($res as $vl) {
 
             $label = new Label();

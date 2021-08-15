@@ -51,6 +51,11 @@ class Product implements Indentifiable
      */
     private $variantProducts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VariantRemoved::class, mappedBy="product", orphanRemoval=true)
+     */
+    private $variantsRemoved;
+
 
 
     /**
@@ -75,6 +80,7 @@ class Product implements Indentifiable
         $this->pictures = new ArrayCollection();
         $this->variantNames = new ArrayCollection();
         $this->variantProducts = new ArrayCollection();
+        $this->variantsRemoved = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +222,41 @@ class Product implements Indentifiable
             // set the owning side to null (unless already changed)
             if ($variantProduct->getProduct() === $this) {
                 $variantProduct->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setVariantProducts($vps): self {
+        $this->variantProducts = $vps;
+        return $this;
+    }
+
+    /**
+     * @return Collection|VariantRemoved[]
+     */
+    public function getVariantsRemoved(): Collection
+    {
+        return $this->variantsRemoved;
+    }
+
+    public function addVariantsRemoved(VariantRemoved $variantsRemoved): self
+    {
+        if (!$this->variantsRemoved->contains($variantsRemoved)) {
+            $this->variantsRemoved[] = $variantsRemoved;
+            $variantsRemoved->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariantsRemoved(VariantRemoved $variantsRemoved): self
+    {
+        if ($this->variantsRemoved->removeElement($variantsRemoved)) {
+            // set the owning side to null (unless already changed)
+            if ($variantsRemoved->getProduct() === $this) {
+                $variantsRemoved->setProduct(null);
             }
         }
 

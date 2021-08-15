@@ -35,6 +35,21 @@ class VariantName
      */
     private $variantLabels;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rank;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Shop::class, inversedBy="variantNames")
+     */
+    private $shop;
+
     public function __construct()
     {
         $this->variantLabels = new ArrayCollection();
@@ -92,6 +107,42 @@ class VariantName
         if ($this->variantLabels->removeElement($variantLabel)) {
             $variantLabel->removeVariantName($this);
         }
+
+        return $this;
+    }
+
+    public function getRank(): ?int
+    {
+        return $this->rank;
+    }
+
+    public function setRank(?int $rank): self
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): self
+    {
+        $this->shop = $shop;
 
         return $this;
     }

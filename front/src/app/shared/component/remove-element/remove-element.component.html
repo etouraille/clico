@@ -1,11 +1,18 @@
-<div>
-  <select class="form-control" (change)="onChange($event)">
+<div class="col-12">
+  <select class="form-control inline" (change)="onChange($event.target.value)">
     <option *ngFor="let variant of availableVariants" [value]="variant.id">{{ variant.name}}</option>
   </select>
-  <span *ngFor="let name of names;let i=index;">
-    {{ name.name }}
-    <select class="form-control">
+  <span class="inline" *ngFor="let name of names;let i=index;">
+    <span *ngIf="!displayText(name.id)">
+    <span>{{ name.name }}</span>
+    <select class="form-control inline" (change)="onChangeVariant($event.target.value, name.id, i)">
       <option *ngFor="let label of name.labels" [value]="label.id">{{label.label}}</option>
     </select>
+    </span>
+    <span *ngIf="displayText(name.id)" class="element">
+      {{ displayText(name.id).variantNameValue }} :
+      {{ displayText(name.id).variantLabelValue }}
+      <mat-icon class="icon" (click)="removeVariant(i)">remove_circle_outline</mat-icon>
+    </span>
   </span>
 </div>

@@ -12,7 +12,6 @@ const appRoutes: Routes = [
     children: [
       {
         path: '',
-        pathMatch: 'full',
         loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
       },
       {

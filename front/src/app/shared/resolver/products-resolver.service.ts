@@ -23,7 +23,6 @@ export class ProductsResolverService implements Resolve<Product[]> {
     return this.http.get<Product[]>('/api/shop/' + this.uuid +'/product' ).pipe(
       take(1),
       tap((products: Product[]) => {
-        console.log( products );
         this.store.dispatch(addProducts({products}))
       })
     );

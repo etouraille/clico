@@ -30,6 +30,11 @@ class VariantLabel
      */
     private $variantName;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rank;
+
     public function __construct()
     {
         $this->variantName = new ArrayCollection();
@@ -72,6 +77,18 @@ class VariantLabel
     public function removeVariantName(VariantName $variantName): self
     {
         $this->variantName->removeElement($variantName);
+
+        return $this;
+    }
+
+    public function getRank(): ?int
+    {
+        return $this->rank;
+    }
+
+    public function setRank(?int $rank): self
+    {
+        $this->rank = $rank;
 
         return $this;
     }

@@ -6,9 +6,15 @@ App\Model\Variant:
     id:
       type: integer
       groups: [input, output]
+    rank:
+      type: integer
+      groups: [ input, output ]
     name:
       type: string
       groups: [input, output]
+    type:
+      type: string
+      groups: [ input, output ]
     labels:
       type: array<App\Model\Label>
       groups: [ input, output ]

@@ -20,6 +20,8 @@ import { ChangePasswordComponent } from './setting/change-password/change-passwo
 import { ImgComponent } from './shared/component/img/img.component';
 import { PicturesComponent } from './shared/component/pictures/pictures.component';
 import { RemoveElementComponent } from './shared/component/remove-element/remove-element.component';
+import { FrontVariantComponent } from './shared/component/front/front-variant/front-variant.component';
+import { VariantAutocompleteComponent } from './shared/component/variant-autocomplete/variant-autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { RemoveElementComponent } from './shared/component/remove-element/remove
     LoginComponent,
     SettingComponent,
     ChangePasswordComponent,
+
+
   ],
   imports: [
     BrowserModule,

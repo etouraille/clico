@@ -18,6 +18,12 @@ App\Model\VariantProduct:
     label:
       type: string
       groups: [input, output,pv]
+    variantMapping:
+      type: string
+      groups: [ input, output,pv ]
     product:
       type: App\Entity\Product
+      groups: [input, output, pv]
+    removed:
+      type: boolean
       groups: [input, output, pv]

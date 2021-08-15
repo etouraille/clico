@@ -8,16 +8,22 @@ App\Entity\Product:
       groups: [input, output,pv]
     uuid:
       type: string
-      groups: [input, output,pv]
+      groups: [input, output,pv, product]
     name:
       type: string
-      groups: [input, output,pv]
+      groups: [input, output,pv, product]
     price:
       type: float
-      groups: [input, output,pv]
+      groups: [input, output,pv, product]
     label:
       type: string
-      groups: [input, output,pv]
+      groups: [input, output,pv, product]
     pictures:
       type: ArrayCollection<App\Entity\Picture>
-      groups: [input, output,pv]
+      groups: [input, output,pv, product]
+    shop:
+      type: App\Entity\Shop
+      groups: [input,output, pv, product]
+    variantProducts:
+      type: ArrayCollection<App\Model\VariantProduct>
+      groups: []

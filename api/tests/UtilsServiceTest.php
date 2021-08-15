@@ -60,7 +60,8 @@ class UtilsServiceTest extends WebTestCase
         $this->init();
         $a = [1,'a', 'c'];
         $b = [1, 'c'];
-        $this->assertTrue(UtilsService::contains($a, $b));
+        $this->assertTrue(UtilsService::contains($a, $b, $comp));
+        $this->assertEquals($comp, ['a']);
         $c = [1, 'b'];
         $this->assertFalse(UtilsService::contains($a, $c ));
     }

@@ -13,7 +13,7 @@ export class VariantListComponent implements OnInit {
 
   variants : [];
 
-  displayedColumns : any = ['name', 'labels', 'action'];
+  displayedColumns : any = ['name', 'labels', 'action', 'removed'];
 
   shop: Shop;
 
@@ -41,6 +41,13 @@ export class VariantListComponent implements OnInit {
 
   edit(id) {
     this.router.navigate(['je-vends/ma-boutique/' + this.shop.uuid + '/variant/' + id]);
+  }
+
+  toggleRemove( removed: boolean , variantMapping: string, productUuid: string) {
+    this.http.post('/api/product/' + productUuid + '/variant-removed', {
+      add : removed, // si il removed il faut l'ajouter
+      variantMapping,
+    }).subscribe();
   }
 
 }

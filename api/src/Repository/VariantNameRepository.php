@@ -25,9 +25,32 @@ class VariantNameRepository extends ServiceEntityRepository
             ->where('product.uuid = :uuid')
             ->setParameter('uuid', $uuid)
             ->leftJoin('variantName.variantLabels', 'variantLabels')
+            ->orderBY('variantLabels.rank', 'ASC')
+            ->orderBy('variantName.rank', 'ASC')
             ->getQuery()
             ->getResult()
         ;
+    }
+
+
+    public function getVariantsForProduct($uuid, $query = null) {
+        $qb = $this->createQueryBuilder('variantName')
+            ->join('variantName.shop', 'shop')
+            ->where('shop.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->leftJoin('variantName.variantLabels', 'variantLabels');
+
+        if($query) {
+            $qb = $qb
+                ->andWhere('variantName.name LIKE :query')
+                ->setParameter('query', '%'. $query. '%');
+        }
+        return $qb
+            ->orderBY('variantLabels.rank', 'ASC')
+            ->orderBy('variantName.rank', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**

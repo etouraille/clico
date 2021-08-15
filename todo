@@ -5,11 +5,37 @@ liste produits : mettre une tabulation.
 liste produit: styler la page
 style général
 image : rajouter une icone
-produit : à l'update / effacer les anciennes images.
- 
+Faire un cron de suppression des anciennes images.
 
-create shop
-- nom
+creation des variant a part puis ensuite ajout des variants à une produit ...
+
+afficher le variant sur la page de modification du variant.
+
+Rjouter la pagination pour la liste de variants. 
+
+Rajouter une page variantProduct pour les variants d'un produit.
+
+Front:
+
+Bandeau
+Creation de compte
+A la commande et depuis le front
+
+Moteur de recherce sur les boutique et sur les produits.
+
+Mise en place des variants ( en prenant tout les cas )
+
+renvoyer les variants ordonnée dans l'api product.
+
+Affichage front variant ( par le plus petit dénominateur commun )
+
+Faire en sorte que quand on modifie les variant, ca recharge 
+la page des suppression.
+
+Pouvoir avoir les variant existance en autocomplétion en lecture
+Pour faciliter la saisie.
+
+Create shop
 - contact ( tel, mobile, email)
 - adresse
 - image
