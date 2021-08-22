@@ -93,7 +93,7 @@ export class VariantComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.http.patch('/api/product/' + this.product.uuid + '/variant', { variants : this.variantForm.value.variants})
+    this.http.patch('/api/variant', { variants : this.variantForm.value.variants})
       .subscribe((data:any) => {
       this.variantForm.patchValue(data.variants);
       this.variantsChange.emit(data.variants);

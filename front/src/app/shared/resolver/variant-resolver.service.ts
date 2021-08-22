@@ -20,7 +20,7 @@ export class VariantResolverService implements Resolve<Variant[]> {
   resolve(route: ActivatedRouteSnapshot): Observable<Variant[]> {
     this.uuid = route.paramMap.get('puuid').split('?')[0];
 
-    return this.http.get<Variant[]>('/api/product/' + this.uuid + '/variant').pipe(
+    return this.http.get<Variant[]>('/api/variant').pipe(
       take(1),
     );
   }

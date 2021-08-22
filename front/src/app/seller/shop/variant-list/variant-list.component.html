@@ -43,7 +43,7 @@
       <ng-container matColumnDef="removed">
         <th mat-header-cell *matHeaderCellDef> Supprimée</th>
         <td mat-cell *matCellDef="let element">
-          <input type="checkbox" (click)="toggleRemove(element.removed, element.variantMapping, element.product.uuid)" [ngModel]="element.removed"/>
+          <input type="checkbox" (click)="toggleRemove(element.removed, element.variantMapping, element.product.uuid)" [(ngModel)]="element.removed"/>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

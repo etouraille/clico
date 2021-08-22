@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\Picture;
 use App\Entity\Product;
+use App\Entity\Shop;
 use App\Entity\VariantLabel;
 use App\Entity\VariantName;
 use App\Entity\VariantProduct;
@@ -29,7 +30,7 @@ class VariantService
     /*
      * @Deprecated
      * */
-    public function getVariantsFromProductUuid($uuid): Variants {
+    public function getVariantsForProductUuid($uuid): Variants {
         $entities = $this->em->getRepository(VariantName::class)->getVariantsForUuid($uuid);
         $ret = new Variants();
         foreach($entities as $entity) {
@@ -50,8 +51,8 @@ class VariantService
         return $ret;
     }
 
-    public function getVariantsFromShop($uuid, $query = null): Variants {
-        $entities = $this->em->getRepository(VariantName::class)->getVariantsForProduct($uuid, $query );
+    public function getVariantsForShop(Shop $shop, $query = null): Variants {
+        $entities = $this->em->getRepository(VariantName::class)->getVariantsForShop($shop, $query );
         $ret = new Variants();
         foreach($entities as $entity) {
             $variant = new Variant();
@@ -286,13 +287,13 @@ class VariantService
         if( !UtilsService::contains($a, $b, $comp )) {
             return;
         }
-        $variants = $this->getVariantsFromProductUuid($productUuid);
+        $variants = $this->getVariantsForProductUuid($productUuid);
         $ret = [];
         $this->logger->error('here[complementaire]', $comp);
         $this->logger->error('here[complementaire]', $a);
         $this->logger->error('here[complementaire]', $b);
 
-
+        $index = 0;
         foreach($comp as $elem) {
             $tab = explode('_', $elem);
             $labelId = $tab[1];
@@ -307,7 +308,8 @@ class VariantService
                     $this->logger->error('here[complementaire]', $res);
 
                     foreach($res as $key) {
-                        $ret[] = array_merge($b, [$key]);
+                        $ret['comp_'. $index] = array_merge($b, [$key]);
+                        $index ++;
                     }
                 }
             }
@@ -315,6 +317,11 @@ class VariantService
         return $ret;
     }
 
+    /**
+     * @deprecated
+     * @param $removedVariantMapping
+     * @param $uuid
+     */
     public function removeVariantSomeVariantMappingFromVariantRemoved($removedVariantMapping, $uuid) {
         foreach($removedVariantMapping as $key) {
             $variantsRemoved = $this->em->getRepository(VariantRemoved::class)->findByProduct($uuid);
@@ -331,6 +338,23 @@ class VariantService
                 }
             }
         }
+    }
+
+    public function getFilteredVariantProductMapping($key, Product $product) {
+        $variantProducts = $this->em->getRepository(VariantProduct::class)->findByProduct($product);
+        $ret = [];
+        $index = 0;
+        foreach($variantProducts as $variantProduct) {
+            $vpKey = explode('#', $variantProduct->getVariantMapping());
+            $this->logger->error('here [vpKey]', $vpKey);
+            $this->logger->error('here [key]', $key);
+
+            if(UtilsService::contains($vpKey, $key) && !UtilsService::contains($key, $vpKey)) {
+                $ret['filtered_'. $index] = $vpKey;
+                $index++;
+            }
+        }
+        return $ret;
     }
 
 }

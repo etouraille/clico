@@ -1,5 +1,5 @@
 <div class="content">
-  <form [formGroup]="addVariantForm">
+  <form [formGroup]="addVariantForm" (ngSubmit)="onSubmit()">
     <div formArrayName="variants">
       <div *ngFor="let variant of variants.controls;let i=index">
         <app-variant-autocomplete  [formControlName]="i"></app-variant-autocomplete>
@@ -7,5 +7,6 @@
       </div>
     </div>
     <mat-icon (click)="add()">add_circle_outline</mat-icon>
+    <button type="sumit" class="btn btn-success">Valider</button>
   </form>
 </div>

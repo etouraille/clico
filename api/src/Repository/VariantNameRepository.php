@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\VariantName;
+use App\Model\Shop;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,9 +20,14 @@ class VariantNameRepository extends ServiceEntityRepository
         parent::__construct($registry, VariantName::class);
     }
 
+
+
+    /*
+     * @deprecated since new repartition of variant TODO check if this is really deprecated.
+     */
     public function getVariantsForUuid($uuid) {
         return $this->createQueryBuilder('variantName')
-            ->join('variantName.product', 'product')
+            ->join('variantName.products', 'product')
             ->where('product.uuid = :uuid')
             ->setParameter('uuid', $uuid)
             ->leftJoin('variantName.variantLabels', 'variantLabels')
@@ -33,11 +39,11 @@ class VariantNameRepository extends ServiceEntityRepository
     }
 
 
-    public function getVariantsForProduct($uuid, $query = null) {
+    public function getVariantsForShop(\App\Entity\Shop $shop, $query = null) {
         $qb = $this->createQueryBuilder('variantName')
             ->join('variantName.shop', 'shop')
             ->where('shop.uuid = :uuid')
-            ->setParameter('uuid', $uuid)
+            ->setParameter('uuid', $shop->getUuid())
             ->leftJoin('variantName.variantLabels', 'variantLabels');
 
         if($query) {

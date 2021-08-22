@@ -50,7 +50,7 @@ class VariantLabelRepository extends ServiceEntityRepository
             $label = new Label();
             $label->setLabel($vl->getLabel());
             $label->setId($vl->getId());
-            $label->setName($vl->getVariantName()[0]->getName());
+            $label->setName($vl->getVariantName()->getName());
             $ret[] = $label;
         }
         return $ret;

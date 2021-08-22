@@ -66,7 +66,7 @@ class VariantController implements ShopAuthentifiedController
         $query = json_decode($request->getContent(), true)['query'];
         $ret = [];
         if($query && strlen($query) > 1) {
-            return $service->getVariantsFromShop($shop->getUuid(), $query);
+            return $service->getVariantsForShop($shop, $query);
         }
         return new Variants();
 
@@ -74,7 +74,7 @@ class VariantController implements ShopAuthentifiedController
 
 
     /**
-     * @Patch("/api/product/{productUuid}/variant")
+     * @Patch("/api/variant")
      * @ParamConverter(
     "variants",
     class="App\Model\Variants",
@@ -84,11 +84,11 @@ class VariantController implements ShopAuthentifiedController
      * @View( serializerGroups={"output"})
      * @return Variants
      */
-    public function patchVariant(string $productUuid, Variants $variants, EntityManagerInterface $em, LoggerInterface $logger, VariantService $service)
+    public function patchVariant(Shop $shop, Variants $variants, EntityManagerInterface $em, LoggerInterface $logger, VariantService $service)
     {
         $removedVariantMapping = [];
         $variants = $variants->getVariants();
-        $entities = $em->getRepository(VariantName::class)->getVariantsForUuid($productUuid);
+        $entities = $em->getRepository(VariantName::class)->getVariantsForShop($shop);
         foreach ($entities as $i => $variantNameEntity) {
             $tab = array_filter($variants, function ($elem) use ($variantNameEntity, $logger) {
                 return ($elem->getId() == $variantNameEntity->getId());
@@ -114,20 +114,10 @@ class VariantController implements ShopAuthentifiedController
                     if (!$labelForVariantLabel) {
 
                         $removedVariantId[] = $variantLabel->getId();
-                        $removedVariantMapping[] = $entities[$i]->getId() . '_' . $variantLabel->getId();
-                        $con = $em->getConnection();
-                        $con->executeStatement('
-                                DELETE FROM variant_label_variant_name 
-                                WHERE variant_label_id = :label_id 
-                                AND variant_name_id = :name_id', [
-                            'label_id' => $variantLabel->getId(),
-                            'name_id' => $entities[$i]->getId()
-                        ]);
-                        // $entities[$i]->removeVariantLabel($variantLabel);
-                        // $variantLabel->removeVariantName($entities[$i]);
-
-                        //$em->persist($variantLabel);
-                        //$em->flush();
+                        $entities[$i]->removeVariantLabel($variantLabel);
+                        $em->remove($variantLabel);
+                        $em->persist($variantLabel);
+                        $em->flush();
                     }
                 }
                 // on doit recupérer tout ceux qui on été créée et ceux qui ne font pas partie des supprimés
@@ -142,10 +132,7 @@ class VariantController implements ShopAuthentifiedController
 
                     } else {
                         $variantLabel = $em->getRepository(VariantLabel::class)->findOneById($label->getId());
-
-
                     }
-                    $variantLabel->addVariantName($entities[$i]);
                     $entities[$i]->addVariantLabel($variantLabel);
                     $em->persist($variantLabel);
                 }
@@ -159,7 +146,7 @@ class VariantController implements ShopAuthentifiedController
         });
         foreach ($addedVariants as $variant) {
             $variantName = new VariantName();
-            $variantName->setProduct($em->getRepository(Product::class)->findOneByUuid($productUuid));
+            $variantName->setShop($shop);
             $variantName->setName($variant->getName());
             $variantName->setRank($variant->getRank());
             $variantName->setType($variant->getType());
@@ -175,17 +162,73 @@ class VariantController implements ShopAuthentifiedController
                     $variantLabel = $em->getRepository(VariantLabel::class)->findOneById($label->getId());
 
                 }
-                $variantLabel->addVariantName($variantName);
                 $variantName->addVariantLabel($variantLabel);
                 $em->persist($variantLabel);
             }
         }
         $em->flush();
-        $ret = $service->getVariantsFromProductUuid($productUuid);
-        $service->removeVariantSomeVariantMappingFromVariantRemoved($removedVariantMapping, $productUuid);
-        $service->generateProductVariant($ret, $productUuid);
+        $ret = $service->getVariantsForShop($shop);
 
         return $ret;
+    }
+
+
+    /**
+     * @Patch("/api/product/{productUuid}/variant")
+     * @ParamConverter(
+    "variants",
+    class="App\Model\Variants",
+    converter="fos_rest.request_body",
+    options={"deserializationContext"={"groups"={"input"} } }
+    )
+     * @View( serializerGroups={"output"})
+     * @return Variants
+     */
+    public function patchVariantForProduct(string $productUuid, Variants $variants, EntityManagerInterface $em, LoggerInterface $logger, VariantService $service)
+    {
+        $removedVariantMapping = [];
+        $_variants = $variants->getVariants();
+        $product = $em->getRepository(Product::class)->findOneByUuid($productUuid);
+        $entities = $em->getRepository(VariantName::class)->getVariantsForUuid($productUuid);
+        foreach ($entities as $i => $variantNameEntity) {
+            $tab = array_filter($_variants, function ($elem) use ($variantNameEntity, $logger) {
+                return ($elem->getId() == $variantNameEntity->getId());
+            });
+
+            $variantForVariantName = array_shift($tab);
+            if (!$variantForVariantName) {
+                $con = $em->getConnection();
+                $con->executeStatement('
+                                DELETE FROM variant_name_product 
+                                WHERE variant_name_id = :variant_name_id 
+                                AND product_id = :product_id', [
+                    'variant_name_id' => $variantNameEntity->getId(),
+                    'product_id' => $product->getId()
+                ]);
+
+            }
+        }
+        $addedVariants = array_filter($_variants, function ($elem) {
+            return $elem->getId();
+        });
+        foreach ($addedVariants as $variant) {
+            $con = $em->getConnection();
+            try {
+                $con->executeStatement('
+                                INSERT INTO variant_name_product 
+                                ( variant_name_id, product_id) 
+                                VALUES (:variant_name_id,  :product_id )', [
+                    'variant_name_id' => $variant->getId(),
+                    'product_id' => $product->getId()
+                ]);
+            } catch(\Exception $e) {
+
+            }
+        }
+        $em->flush();
+        $service->generateProductVariant($variants, $productUuid);
+
+        return $variants;
     }
 
     /**
@@ -193,9 +236,20 @@ class VariantController implements ShopAuthentifiedController
      * @View( serializerGroups={"output"})
      * @return Variants
      */
-    public function getVariants(string $productUuid, EntityManagerInterface $em, LoggerInterface $logger, VariantService $service)
+
+    public function getVariantsForProduct($productUuid, VariantService $service ) {
+        return $service->getVariantsForProductUuid($productUuid);
+    }
+
+
+    /**
+     * @Get("/api/variant")
+     * @View( serializerGroups={"output"})
+     * @return Variants
+     */
+    public function getVariants(Shop $shop, VariantService $service)
     {
-        return $service->getVariantsFromProductUuid($productUuid);
+        return $service->getVariantsForShop($shop);
     }
 
     /**
@@ -310,6 +364,8 @@ class VariantController implements ShopAuthentifiedController
     public function toggleVariantRemoved($uuid, Request $request, EntityManagerInterface $em, LoggerInterface $logger, VariantService $service)
     {
         $product = $em->getRepository(Product::class)->findOneByUuid($uuid);
+        $data = json_decode($request->getContent(), true);
+        $key = explode('#', $data['variantMapping']);
         if(!$product) {
             throw new BadRequestHttpException('The product doesn t exists');
         }
@@ -319,14 +375,29 @@ class VariantController implements ShopAuthentifiedController
         foreach($variantsRemoved as $variantRemoved ) {
             $tab[$variantRemoved->getId()] = explode('#',$variantRemoved->getVariantMapping());
             $toBeMaybeDeleted[$variantRemoved->getId()] = $variantRemoved;
+
+
         }
-        $data = json_decode($request->getContent(), true);
-        $key = explode('#', $data['variantMapping']);
+        // le complementaire de key est affecté par defaut dans la liste des produit
+        $filtered  = $service->getFilteredVariantProductMapping($key , $product);
+        $logger->error('here[filtered]', $filtered);
+        $filtered = array_filter($filtered, function( $elem ) use ($tab) {
+            $tab = array_filter($tab, function($some) use($elem) {
+               return UtilsService::contains($elem, $some) && UtilsService::contains($some, $elem);
+            });
+            if(count($tab) > 0) {
+                return false;
+            }
+            return true;
+        });
+
+
+
         if ($data['add']) {
             // add case.
             foreach($tab as $vrIndex => $a ) {
                 if( UtilsService::contains($a, $key) && UtilsService::contains($key, $a)) {
-                    $em->remove($toBeMaybeDeleted[$vrIndex]);
+                    if(!preg_match('#comp_#',$vrIndex)) $em->remove($toBeMaybeDeleted[$vrIndex]);
                     $em->flush();
                 } elseif(UtilsService::contains($key, $a)) {
                     // supprimer celui ci
@@ -335,7 +406,7 @@ class VariantController implements ShopAuthentifiedController
                     // exemple rouge 100g  1L contains rouge
                     // on ajoute rouge 200g , rouge 300g
                     $complemenataires = $service->getComplementaires($key, $a, $product->getUuid());
-                    $em->remove($toBeMaybeDeleted[$vrIndex]);
+                    if(!preg_match('#comp_#',$vrIndex)) $em->remove($toBeMaybeDeleted[$vrIndex]);
                     $logger->error('here[comp]', [$complemenataires]);
                     foreach($complemenataires as $comp ) {
                         $vr = new VariantRemoved();
@@ -346,6 +417,13 @@ class VariantController implements ShopAuthentifiedController
                     $em->flush();
 
                 }
+            }
+            foreach($filtered as $key ) {
+                $vr = new VariantRemoved();
+                $vr->setVariantMapping(implode('#', $key));
+                $vr->setProduct($product);
+                $em->persist($vr);
+                $em->flush();
             }
         } else {
             // remove case. ( remove product )

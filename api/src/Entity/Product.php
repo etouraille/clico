@@ -41,10 +41,6 @@ class Product implements Indentifiable
 
     private $shopUuid;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VariantName::class, mappedBy="product", orphanRemoval=true)
-     */
-    private $variantNames;
 
     /**
      * @ORM\OneToMany(targetEntity=VariantProduct::class, mappedBy="product", orphanRemoval=false)
@@ -55,6 +51,11 @@ class Product implements Indentifiable
      * @ORM\OneToMany(targetEntity=VariantRemoved::class, mappedBy="product", orphanRemoval=true)
      */
     private $variantsRemoved;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=VariantName::class, mappedBy="products")
+     */
+    private $variantNames;
 
 
 
@@ -78,9 +79,9 @@ class Product implements Indentifiable
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
-        $this->variantNames = new ArrayCollection();
         $this->variantProducts = new ArrayCollection();
         $this->variantsRemoved = new ArrayCollection();
+        $this->variantNames = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,36 +170,6 @@ class Product implements Indentifiable
     }
 
     /**
-     * @return Collection|VariantName[]
-     */
-    public function getVariantNames(): Collection
-    {
-        return $this->variantNames;
-    }
-
-    public function addVariantName(VariantName $variantName): self
-    {
-        if (!$this->variantNames->contains($variantName)) {
-            $this->variantNames[] = $variantName;
-            $variantName->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVariantName(VariantName $variantName): self
-    {
-        if ($this->variantNames->removeElement($variantName)) {
-            // set the owning side to null (unless already changed)
-            if ($variantName->getProduct() === $this) {
-                $variantName->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|VariantProduct[]
      */
     public function getVariantProducts(): Collection
@@ -258,6 +229,33 @@ class Product implements Indentifiable
             if ($variantsRemoved->getProduct() === $this) {
                 $variantsRemoved->setProduct(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VariantName[]
+     */
+    public function getVariantNames(): Collection
+    {
+        return $this->variantNames;
+    }
+
+    public function addVariantName(VariantName $variantName): self
+    {
+        if (!$this->variantNames->contains($variantName)) {
+            $this->variantNames[] = $variantName;
+            $variantName->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariantName(VariantName $variantName): self
+    {
+        if ($this->variantNames->removeElement($variantName)) {
+            $variantName->removeProduct($this);
         }
 
         return $this;

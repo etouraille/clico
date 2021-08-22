@@ -21,12 +21,15 @@ export class VariantAutocompleteComponent implements OnInit, ControlValueAccesso
 
   myControl = new FormControl();
   filteredOptions: Observable<any>;
+  labels: any;
 
   propagateChange = (_: any) => {};
 
   writeValue(value: any) {
+    console.log(value);
     if (value) {
-      this.myControl.setValue(value.name);
+      this.myControl.setValue(value);
+      this.labels = value.labels;
     }
   }
   registerOnChange(fn: any) {
@@ -49,7 +52,8 @@ export class VariantAutocompleteComponent implements OnInit, ControlValueAccesso
 
   onSelected(option: MatAutocompleteSelectedEvent) {
     // set value.
-    this.propagateChange(option);
+    this.propagateChange(option.option.value);
+    this.labels = option.option.value.labels;
   }
 
   displayFn(value) {

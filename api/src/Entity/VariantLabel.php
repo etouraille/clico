@@ -25,19 +25,21 @@ class VariantLabel
     private $label;
 
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VariantName::class, inversedBy="variantLabels")
-     */
-    private $variantName;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $rank;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=VariantName::class, inversedBy="variantLabels")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $variantName;
+
     public function __construct()
     {
-        $this->variantName = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -57,30 +59,7 @@ class VariantLabel
         return $this;
     }
 
-    /**
-     * @return Collection|VariantName[]
-     */
-    public function getVariantName(): Collection
-    {
-        return $this->variantName;
-    }
-
-    public function addVariantName(VariantName $variantName): self
-    {
-        if (!$this->variantName->contains($variantName)) {
-            $this->variantName[] = $variantName;
-        }
-
-        return $this;
-    }
-
-    public function removeVariantName(VariantName $variantName): self
-    {
-        $this->variantName->removeElement($variantName);
-
-        return $this;
-    }
-
+    
     public function getRank(): ?int
     {
         return $this->rank;
@@ -89,6 +68,18 @@ class VariantLabel
     public function setRank(?int $rank): self
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getVariantName(): ?VariantName
+    {
+        return $this->variantName;
+    }
+
+    public function setVariantName(?VariantName $variantName): self
+    {
+        $this->variantName = $variantName;
 
         return $this;
     }
